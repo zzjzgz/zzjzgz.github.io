@@ -1,0 +1,175 @@
+/* 把我们所有标签的内外边距清零 */
+* {
+    color: rgba(0, 0, 0);
+    margin: 0;
+    padding: 0
+}
+/* em 和 i 斜体的文字不倾斜 */
+em,
+i {
+    font-style: normal
+}
+/* 去掉li 的小圆点 */
+li {
+    list-style: none
+}
+
+img {
+    /* border 0 照顾低版本浏览器 如果 图片外面包含了链接会有边框的问题 */
+    border: 0;
+    /* 取消图片底侧有空白缝隙的问题 */
+    vertical-align: middle
+    
+}
+
+button {
+    /* 当我们鼠标经过button 按钮的时候，鼠标变成小手 */
+    cursor: pointer
+}
+
+a {
+    color: rgb(0, 0, 0);
+    text-decoration: none
+}
+
+a:hover {
+    color: #17ace7
+}
+
+button,
+input {
+    /* "\5B8B\4F53" 就是宋体的意思 这样浏览器兼容性比较好 */
+    font-family: Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB, "\5B8B\4F53", sans-serif
+}
+
+body {
+    /* CSS3 抗锯齿形 让文字显示的更加清晰 */
+    -webkit-font-smoothing: antialiased;
+    background-color: #f5f5f5;
+    font: 12px/1.5 Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB, "\5B8B\4F53", sans-serif;
+    color: #666
+    
+}
+
+.hide,
+.none {
+    display: none
+}
+/* 清除浮动 */
+.clearfix:after {
+    visibility: hidden;
+    clear: both;
+    display: block;
+    content: ".";
+    height: 0
+}
+
+.clearfix {
+    *zoom: 1
+}
+.beijing{
+    width: 1920px;
+    position: fixed;
+}
+.index{
+    width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+.index nav{
+    width: 1200px;
+    height: 57px;
+    background-color: rgba(25, 163, 226, 0.47);
+    font-size: 20px;
+}
+.index nav a{
+    line-height: 57px;
+    font-size: 20px;
+    color: rgb(37, 35, 35);
+    margin-left: 30px;
+}
+.index nav a:hover{
+    border-bottom:4px solid rgb(11, 153, 248);
+    /* background-color: rgb(0, 0, 0,0.4); */
+}
+.index .head{
+    /* float: left; */
+    width: 900px;
+    height:100px;
+    text-align: center;
+    line-height: 100px;
+    font-size: 40px;
+    background-color: rgba(250, 250, 250, 0.47);
+}
+.index .sou{
+    position: absolute;
+    width: 270px;
+    height: 100px;
+    background-color: rgba(250, 250, 250, 0.47);
+    margin-left: 930px;
+}
+.index .sou input{
+    float: left;
+    font-size: 20px;
+    margin-top: 34px;
+    border:4px solid rgba(25, 163, 226);
+    background-color: transparent;
+}
+.index .sou div{
+    float: left;
+    width: 34px;
+    height: 34px;
+    background-color: rgba(250, 250, 250, 0.47);
+    margin-top: 34px;
+    
+}
+.index .sou div a{
+    line-height: 34px;
+    font-size: 20px;
+    margin-left: 7px;
+}
+.index .mu{
+    position:fixed;
+    /* float: right; */
+    width: 270px;
+    background-color: rgba(250, 250, 250, 0.47);
+    margin-left: 930px;
+    margin-top: 20px;
+}
+.index .mu h2{
+    text-align: center;
+    margin-top: 20px;
+}
+.index .mu a{
+    display: block;
+    margin-left: 70px;
+    font-size: 17px;
+    margin-top: 10px;
+}
+.index .zhuti{
+    position: absolute;
+    width: 900px;
+    background-color: rgba(250, 250, 250, 0.47);
+    margin-top: 20px;
+}
+.index .zhuti:hover{
+    box-shadow: 5px 7px 47px rgba(0, 0, 0,0.77);
+    transition: box-shadow 0.7s;
+}
+.index .zhuti a{
+    float: right;
+}
+.index .zhuti h2{
+    color: rgb(194, 54, 54);
+    border-bottom:1px solid rgba(250, 250, 250, 0.47);
+}
+.index .zhuti p{
+    font-size: 17px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+.index .hui{
+   position: absolute;
+   left: 947px;
+   bottom: 47px;
+}
