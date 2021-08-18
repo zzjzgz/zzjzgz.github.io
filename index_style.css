@@ -42,7 +42,7 @@ input {
 }
 
 body {
-    background: url(./img/背景3.png) no-repeat fixed ;
+    background: url(../博客/img/背景3.png) no-repeat fixed ;
     /* CSS3 抗锯齿形 让文字显示的更加清晰 */
     -webkit-font-smoothing: antialiased;
     background-color: #f5f5f5;
@@ -50,7 +50,27 @@ body {
     color: #666
     
 }
-
+#one{
+    left: 830px;
+}
+#two{
+    left: 900px;
+}
+#three{
+    left: 980px;
+}
+#four{
+    left: 1040px;
+}
+.qie{
+    position: absolute;
+    width: 37px;
+    height: 37px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255,0.77);
+    top: 847px;
+    cursor: pointer;
+}
 .hide,
 .none {
     display: none
