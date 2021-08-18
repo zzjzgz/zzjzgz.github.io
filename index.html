@@ -24,7 +24,23 @@
     <div id="two" class="qie"></div>
     <div id="three" class="qie"></div>
     <div id="four" class="qie"></div>
-    <script src="script.js"></script>
+    <script>
+    var dj = document.getElementById('one');
+    let mz = document.getElementById('two');
+    let lm = document.getElementById('three');
+    let sh = document.getElementById('four');
+    dj.onclick = function(){
+    document.getElementsByTagName('body')[0].style.backgroundImage='url(../博客/img/dj.png)';
+    }
+    mz.onclick = function(){
+    document.getElementsByTagName('body')[0].style.backgroundImage='url(../博客/img/mz.png)';
+    }   
+    lm.onclick = function(){
+    document.getElementsByTagName('body')[0].style.backgroundImage='url(../博客/img/lm.png)';
+    }
+    sh.onclick = function(){
+    document.getElementsByTagName('body')[0].style.backgroundImage='url(../博客/img/sh.png)';
+    }</script>
     <div class="index" id=zzj>
             <nav>
                 <a href="#">首页</a>
