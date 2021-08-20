@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>改变元素中的内容</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        img{
+            width: 960px;
+        }
+        .dian{
+            position: absolute;
+            width: 27px;
+            height: 27px;
+            line-height: 27px;
+            text-align: center;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255,0.47)
+            top: 500px;
+            cursor: pointer;
+        }
+        #one{
+            left: 27px;
+        }
+        #two{
+            left: 67px;
+        }
+        #three{
+            left: 107px;
+        }
+        #four{
+            left: 147px;
+        }
+    </style>
+</head>
+<body>
+    <img src="img/dj.png" alt="刀剑神域" title="刀剑神域">
+    <div id="one" class="dian">1</div>
+    <div id="two" class="dian">2</div>
+    <div id="three" class="dian">3</div>
+    <div id="four" class="dian">4</div>
+    //dian类的作用是保存相同的样式减少代码
+    <script>
+        let dj = document.getElementById('one');
+        let mz = document.getElementById('two');
+        let lm = document.getElementById('three');
+        let sh = document.getElementById('four');
+        //获取div的信息
+        
+        let img = document.querySelector('img');  //获取img的属性值
+        
+        //绑定点击事件---功能是点击div切换图片
+        dj.onclick = function(){
+            img.src = 'img/dj.png';
+            img.alt = '刀剑神域'
+            img.title = '刀剑神域'
+        }
+        mz.onclick = function(){
+            img.src = 'img/mz.png';
+            img.alt = '你的名字'
+            img.title = '你的名字'
+        }
+        
+        lm.onclick = function(){
+            img.src = 'img/lm.png';
+            img.alt = '蕾姆'
+            img.title = '蕾姆'
+        }
+        sh.onclick = function(){
+            img.src = 'img/sh.png';
+            img.alt = '四月是你的谎言'
+            img.title = '四月是你的谎言'
+        }
+    </script>
+</body>
+</html>
