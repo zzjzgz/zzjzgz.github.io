@@ -12,7 +12,7 @@ for (let i = 0;i<span.length;i++){
         // zzj.src = img.src;
         
         if (i==0){
-            document.getElementsByTagName('body')[0].style.backgroundImage='url(img/dj.png)';
+            document.getElementsByTagName('body')[0].style.backgroundImage='url(img/fj.png)';
         }
         if (i==1){
             document.getElementsByTagName('body')[0].style.backgroundImage='url(img/mz.png)';
