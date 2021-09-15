@@ -1,0 +1,79 @@
+{
+  "id": "2797487",
+  "name": "menu",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "15531888",
+      "name": "7_round_solid_数字7_by_climei",
+      "font_class": "7_round_solid",
+      "unicode": "e64d",
+      "unicode_decimal": 58957
+    },
+    {
+      "icon_id": "15531890",
+      "name": "6_round_solid_数字6_by_climei",
+      "font_class": "6_round_solid",
+      "unicode": "e64e",
+      "unicode_decimal": 58958
+    },
+    {
+      "icon_id": "15531891",
+      "name": "9_round_solid_数字9_by_climei",
+      "font_class": "9_round_solid",
+      "unicode": "e64f",
+      "unicode_decimal": 58959
+    },
+    {
+      "icon_id": "15531892",
+      "name": "1_round_solid_数字1_by_climei",
+      "font_class": "1_round_solid",
+      "unicode": "e650",
+      "unicode_decimal": 58960
+    },
+    {
+      "icon_id": "15531894",
+      "name": "5_round_solid_数字5_by_climei",
+      "font_class": "5_round_solid",
+      "unicode": "e651",
+      "unicode_decimal": 58961
+    },
+    {
+      "icon_id": "15531898",
+      "name": "2_round_solid_数字2_by_climei",
+      "font_class": "2_round_solid",
+      "unicode": "e652",
+      "unicode_decimal": 58962
+    },
+    {
+      "icon_id": "15531900",
+      "name": "0_round_solid_数字0_by_climei",
+      "font_class": "0_round_solid",
+      "unicode": "e653",
+      "unicode_decimal": 58963
+    },
+    {
+      "icon_id": "15531901",
+      "name": "3_round_solid_数字3_by_climei",
+      "font_class": "3_round_solid",
+      "unicode": "e654",
+      "unicode_decimal": 58964
+    },
+    {
+      "icon_id": "15531902",
+      "name": "4_round_solid_数字4_by_climei",
+      "font_class": "4_round_solid",
+      "unicode": "e655",
+      "unicode_decimal": 58965
+    },
+    {
+      "icon_id": "15531903",
+      "name": "8_round_solid_数字8_by_climei",
+      "font_class": "8_round_solid",
+      "unicode": "e656",
+      "unicode_decimal": 58966
+    }
+  ]
+}
