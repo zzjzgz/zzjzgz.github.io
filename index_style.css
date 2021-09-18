@@ -1,356 +1,200 @@
-/* 把我们所有标签的内外边距清零 */
-* {
-    color: rgb(0, 0, 0);
-    margin: 0;
-    padding: 0
-}
-/* em 和 i 斜体的文字不倾斜 */
-em,
-i {
-    font-style: normal
-}
-/* 去掉li 的小圆点 */
-li {
-    list-style: none
-}
+        /* 把我们所有标签的内外边距清零 */
+        * {
+            color: rgb(0, 0, 0);
+            margin: 0;
+            padding: 0
+        }
+        /* em 和 i 斜体的文字不倾斜 */
+        em,
+        i {
+            font-style: normal
+        }
+        /* 去掉li 的小圆点 */
+        li {
+            list-style: none
+        }
 
-img {
-    /* border 0 照顾低版本浏览器 如果 图片外面包含了链接会有边框的问题 */
-    border: 0;
-    /* 取消图片底侧有空白缝隙的问题 */
-    vertical-align: middle
-}
+        img {
+            /* border 0 照顾低版本浏览器 如果 图片外面包含了链接会有边框的问题 */
+            border: 0;
+            /* 取消图片底侧有空白缝隙的问题 */
+            vertical-align: middle
+        }
 
-button {
-    /* 当我们鼠标经过button 按钮的时候，鼠标变成小手 */
-    cursor: pointer
-}
+        button {
+            /* 当我们鼠标经过button 按钮的时候，鼠标变成小手 */
+            cursor: pointer
+        }
 
-a {
-    color: #666;
-    text-decoration: none
-}
+        a {
+            color: rgb(0, 0, 0);
+            text-decoration: none
+        }
 
-a:hover {
-    color: #169ec8
-}
+        a:hover {
+            color: #169ec8
+        }
 
-button,
-input {
-    /* "\5B8B\4F53" 就是宋体的意思 这样浏览器兼容性比较好 */
-    font-family: Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB, "\5B8B\4F53", sans-serif
-}
+        button,
+        input {
+            /* "\5B8B\4F53" 就是宋体的意思 这样浏览器兼容性比较好 */
+            font-family: Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB, "\5B8B\4F53", sans-serif
+        }
 
-body {
-    background: url(img/fj.png) no-repeat fixed;
-    /* CSS3 抗锯齿形 让文字显示的更加清晰 */
-    -webkit-font-smoothing: antialiased;
-    background-color: #f5f5f5;
-    font: 12px/1.5 Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB, "\5B8B\4F53", sans-serif;
-    color: #666
-    
-}
-.w_dian{
-    position: absolute;
-    top: 800px;
-    left: 847px;
-}
-.w_dian span{
-    display: inline-block;
-    width: 27px;
-    height: 27px;
-    line-height: 27px;
-    text-align: center;
-    border-radius: 50%;
-    border: 4px solid rgba(245, 207,207,0.47);
-    margin-left: 20px;
-    cursor: pointer; 
-}
-.qie{
-    position: absolute;
-    width: 37px;
-    height: 37px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255,0.77);
-    top: 847px;
-    cursor: pointer;
-}
-.hide,
-.none {
-    display: none
-}
-/* 清除浮动 */
-.clearfix:after {
-    visibility: hidden;
-    clear: both;
-    display: block;
-    content: ".";
-    height: 0
-}
+        body {
+            background: url(img/bj.png) no-repeat fixed ;
+            /* CSS3 抗锯齿形 让文字显示的更加清晰 */
+            -webkit-font-smoothing: antialiased;
+            background-color: #f5f5f5;
+            font: 12px/1.5 Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB, "\5B8B\4F53", sans-serif;
+            color: #666
+            
+        }
+        .ding{
+            position: relative;
+            overflow: hidden;
+            height: 117px;
+            background-color: rgb(255, 255, 255,0.77);
+            margin: 0 auto;
+        }
+        .ding img{
+            position: absolute;
+            width: 1920px;
+            top: -727px;
+        }
+        .ding nav{
+            position: absolute;
+            width: 1920px;
+            height: 150px;
+            /* line-height: 150px; */
+            font-size: 20px;
+            /* background-color: brown; */
+            margin-left: 47px;
+            margin-top: 37px;
+            
+        }
+        .ding nav :hover{
+            border-bottom:7px solid rgb(69, 188, 243);
+        }
+        .ding nav a{
+            display: inline-block;
+            margin-left: 7px;
+            font-size: 18px;
+            color: rgb(0, 0, 0);
+        }
+        .ding nav a span{
+            color: rgb(0, 0, 0);
+        }
+        .index{
+            position: relative;
+            width: 1200px;
+            /* background-color: chartreuse; */
+            left: 360px;
+            top: 17px;
+        }
+        .index .zzj{
+            position: absolute;
+            width: 300px;
+            height: 527px;
+            background-color: rgb(255, 255, 255,0.77);
+            border-radius: 20px;
+        }
 
-.clearfix {
-    *zoom: 1
-}
-.ding{
-    position: relative;
-    width: 1903px; 
-    height: 960px;
-    background-color: rgba(250, 250, 250, 0.07);
-}
-/* .beijing{
-    position: absolute;
-    width: 1920px;  
-    height: 960px;
-} */
-.an{
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    /* background-color: rgba(250, 250, 250, 0.27); */
-    left: 905px;
-    top: 647px;
-    border-radius:50%;
-    cursor: pointer;
-    text-align: center;
-    line-height: 27px;
-    transition: all 0.7s;
-    /* 动画 */
-    animation-name: move;
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
-    /* 循环 */
-    animation-direction: alternate;
-    /* 原来返回 */
-    
-}
-.an:hover{
-    transform: scale(1.27);
-    animation-play-state: paused;
-    /* 鼠标悬停动画停止 */
-}
-@keyframes move{
-    0%{
-        transform: translate(0,0)
-    }
-    100%{
-        transform: translate(0,-27px)
-    }
-}
-.an a{
-    font-size: 37px;
-    color :rgb(255, 255, 255,0.47);
-}
-
-.wrapper {
-    width: 100%;
-}
-
-.holder {
-    width: 100%;
-}
-
-a.animBtn:link, a.animBtn:visited {
-    position: relative;
-    display: block;
-    width: 100px;
-    height: 27px;
-    margin: 30px auto 0;
-    padding: 14px 15px;
-    border: 2px solid #fff;
-    border-radius:12px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
-    text-align: center;
-    text-decoration: none;
-    text-transform: uppercase;
-    overflow: hidden;
-    letter-spacing: .08em;
-    text-shadow: 0 0 1px rgba(0, 0, 0, 0.2), 0 1px 0 rgba(0, 0, 0, 0.2);
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-    -webkit-transition: all .3s ease;
-    -moz-transition: all .3s ease;
-    -o-transition: all .3s ease;
-    transition: all .3s ease;
-}
-
-a.animBtn:link:after, a.animBtn:visited:after {
-    content: "";
-    position: absolute;
-    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.27);
-    height: 0%;
-    left: 50%;
-    top: 50%;
-    width: 100%;
-    z-index: -1;
-    -webkit-transition: all .3s ease 0s;
-    -moz-transition: all .3s ease 0s;
-    -o-transition: all .3s ease 0s;
-    transition: all .3s ease 0s;
-}
-
-a.animBtn:link:hover, a.animBtn:visited:hover {
-    color: #333;
-    text-shadow: none;
-}
-
-a.animBtn:link:hover:after, a.animBtn:visited:hover:after {
-    height: 420%;
-}
-
-a.animBtn.themeA:after {
-    -moz-transform: translateX(-50%) translateY(-50%) rotate(-45deg);
-    -ms-transform: translateX(-50%) translateY(-50%) rotate(-45deg);
-    -webkit-transform: translateX(-50%) translateY(-50%) rotate(-45deg);
-    transform: translateX(-50%) translateY(-50%) rotate(-45deg);
-} 
-.zzj{
-    position: absolute;
-    width: 300px;
-    height: 100px;
-    /* background-color: rgba(250, 250, 250, 0.27); */
-    border-radius:10%;
-    /* text-align: center; */
-    line-height: 77px;
-    font-size: 47px;
-    left: 77px;
-    top: 77px;
-    color: rgb(112, 112, 112);
-    cursor: pointer;
-    transition: all 0.7s;
-}
-/* .zzj:hover{
-    transform: scale(1.27);
-} */
-.zzj p{
-    color: rgb(255, 255, 255,0.47);
-}
-.mulu{
-    position: absolute;
-    width: 300px;
-    height: 300px;
-    border-radius: 62px;
-    background: #e0e0e0;
-    box-shadow:  26px 26px 26px #b3b3b3,        -26px -26px 26px #ffffff;
-    text-align: center;
-    font-size: 20px;
-    top: 160px;
-}
-.mulu img{
-    margin-top: 27px;
-}
-.index{
-    position: relative;
-    width: 1200px;
-    /* height: 1757px; */
-    margin: 0 auto;
-    /* background-color: rgba(255, 255, 255, 0.27); */
-}
-.index nav{
-    width: 1200px;
-    height: 57px;
-    background-color: rgba(25, 163, 226, 0.47);
-    text-shadow: 2px 5px 5px rgba(255, 255, 255, 0.77);
-    font-size: 20px;
-}
-.index nav a{
-    line-height: 57px;
-    font-size: 20px;
-    color: rgb(255, 255, 255,0.77);
-    margin-left: 30px;
-}
-.index nav a:hover{
-    border-bottom:7px solid rgb(48, 7, 231);
-}
-.index .yangshi{
-        border-radius: 78px;
-        background: rgba(250, 250, 250, 0.47);
-        box-shadow: inset 9px 9px 43px #aaaaaa,inset -9px -9px 43px #ffffff;        
-}
-.index div{
-    /* overflow: hidden; */
-    /* 将溢出隐藏 */
-    float: left;
-    width: 400px;
-    height: 500px;
-    background-color: rgba(250, 250, 250, 0.67);
-    margin-top: 20px;
-    margin-left: 30px;
-    font-size: 20px;
-    color: rgb(27, 27, 27);
-    cursor: pointer;/*鼠标变成手指样式*/
-    transition: all 0.7s;
-    /* 所有属性变化在0.6秒内执行动画 */
-} 
-.index div:hover{
-    transform: scale(1.07);/*鼠标放上之后元素变成1.07倍大小*/
-    box-shadow: 0px 0px 27px rgb(0, 0, 0,0.47);
-}
-.index div h2{
-    
-    margin-left: 90px;
-    margin-top: 40px;
-    margin-bottom: 40px;
-}
-.index div p{
-    margin-left: 100px;
-    margin-right: 100px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    /* 限制在一个块元素显示的文本的行数 */
-    -webkit-line-clamp: 3;
-    /* 设置或检索伸缩盒对象的子元素的排列方式 */
-    -webkit-box-orient: vertical;
-}
-.index .tou{
-    float: right;
-    width: 250px;
-    height: 350px;
-    background-color: rgba(250, 250, 250, 0.67);
-    margin-right: 30px;
-}
-.index .xinxi{
-    float: right;
-    width: 250px;
-    height: 100px;
-    background-color: rgba(250, 250, 250, 0.77);
-    margin-right: 30px;
-    text-align: center;
-    font-size: 20px;
-}
-ul{
-    position: relative;
-    right:  520px;
-}
-ul il{
-    /* position: absolute; */
-    float: left;
-    width: 30px;
-    height: 30px;
-    background-color: rgba(25, 163, 226, 0.47);
-    text-align: center;
-    line-height: 30px;
-    margin: 20px;
-    border-radius: 50%;
-    margin-top: 550px;
-    cursor: pointer;
-    /* 鼠标小手 */
-    transition: all 0.5s;
-}
-ul il:hover{
-    transform: scale(1.27);
-    /* 等比例放大---中心放大 */
-}
-.index footer{
-    position: absolute;
-    width: 1200px;
-    height: 57px;
-    top: 1700px;
-    background-color: rgba(25, 163, 226, 0.47);
-    /* text-align: center; */
-    font-size: 20px;
-    line-height: 57px;
-}
-.index footer img{
-    margin-left: 30px;
-}
+        
+        .index .zzj div{
+            overflow: hidden;
+            float: left;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            /* background-color: crimson; */
+            margin: 0 auto;
+        }
+        .index .zzj div img{
+            position: relative;
+            height: 120px;
+            width: 200px;
+            transition: all 1s;
+            left: -50px;
+        }
+        .index .zzj .tou :hover{
+            transform:rotate(180deg);
+      }
+      .index .zzj .tu{
+          overflow: hidden;
+          float: left;
+          width: 300px;
+          height: 177px;
+          /* background-color: blue; */
+          border-radius: 20px;
+      }
+      .index .zzj p{
+        font-size: 20px;
+        border-bottom:7px solid rgb(69, 188, 243,0.47);
+        margin-left: 27px ;
+        margin-top: 17px;
+        margin-right: 27px;
+      }
+      .index .zzj .tu img{
+          width: 377px;
+          height: 200px;
+          transition: all 0.7s;
+      }
+      .index .zzj .tu img:hover{
+        transform: scale(1.27);
+      }
+      .index .zzj p img{
+          width: 27px;
+          margin-right: 7px;
+      }
+      .index .zhuti {
+            position: absolute;
+            width: 873px;
+            /* background-color: #fff; */
+            left: 327px;
+        }
+        .index .zhuti div{
+            width: 873px;
+            height: 277px;
+            background-color: rgb(255, 255, 255,0.47);
+            margin-top: 17px;
+            border-radius: 20px;
+            transition: all 0.7s;
+        }
+        .index .zhuti div:hover{
+            box-shadow: 0px 10px 17px 7px rgb(0, 0, 0,0.47);
+        }
+        .index .zhuti div .img{
+            float: right;
+            overflow: hidden;
+            width: 347px;
+            height: 277px;
+            /* background-color: crimson; */
+            margin-top:0px
+        }
+        .index .zhuti div .img img{
+            position: relative;
+            height: 277px;
+            right: 77px;
+            cursor: pointer;
+            transition: all 0.7s;
+        }
+        .index .zhuti div .img :hover{
+            transform: scale(1.27);
+        }
+        .index .zhuti div h1{
+            position: relative;
+            display: inline-block;
+            left: 60px;
+            font-size: 40px;
+        }
+        .index .zhuti div ul{
+            position: relative;
+            display: inline-block;
+            left: 77px;
+            top: 54px;
+        }
+        .index .zhuti div ul p{
+            font-size: 20px;
+            margin-top: 10px;
+        }
