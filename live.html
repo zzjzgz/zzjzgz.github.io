@@ -25,7 +25,7 @@
         .index{
             position: relative;
             width: 1200px;
-            height: 1277px;
+            height: 1247px;
             background-color: rgba(34, 165, 226, 0.47);
             margin: 0 auto;
         }
@@ -73,21 +73,25 @@
         .zhuti{
             position: absolute;
             width: 800px;
-            height: 1000px;
             background-color: sienna;
             left: 200px;
             top: 230px;
         }
         .zhuti div{
+            overflow: hidden;
             float: left;
             width: 400px;
-            height: 250px;
+            height: 227px;
             background-color: slateblue;
         }
         .zhuti div img{
             width: 400px;
-            height: 250px;
+            height: 227px;
+            transition: all 0.7s;
         }
+        .zhuti div img:hover{
+            transform: scale(1.27);
+      }
     </style>
 </head>
 <body>
@@ -108,7 +112,7 @@
        <strong>家乡风景</strong> 
     </div>
     <div class="biao2">
-        <strong>洛阳东风几时来，川波岸柳春全回。<strong>
+        <strong>闲看云卷云舒，洗涤灵魂近自然。<strong>
     </div>
     <div class="zhuti">
         <div><img src="img/1.jpg" alt=""></div>
