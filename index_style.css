@@ -1,5 +1,6 @@
         /* 把我们所有标签的内外边距清零 */
         * {
+            font-family: Arial, "STKaiti", 黑体, 宋体, sans-serif;
             color: rgb(0, 0, 0);
             margin: 0;
             padding: 0
@@ -99,7 +100,7 @@
             margin: 0 auto;
         }
         .index .zzj{
-            position: absolute;
+            position: fixed;
             width: 300px;
             height: 527px;
             background-color: rgb(255, 255, 255,0.77);
@@ -176,6 +177,7 @@
             width: 347px;
             height: 277px;
             /* background-color: crimson; */
+            /* margin-right: 27px; */
             margin-top:0px
         }
         .index .zhuti div .img img{
