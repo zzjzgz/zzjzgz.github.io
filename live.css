@@ -1,0 +1,102 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.head{
+    position: relative;
+    overflow: hidden;
+    width: 1200px;
+    height: 300px;
+    margin: 0 auto;
+}
+.head img{
+    position: absolute;
+    width: 1200px;
+    top: -277px;
+}
+.index{
+    position: relative;
+    width: 1200px;
+    height: 1377px;
+    background-color: rgba(34, 165, 226, 0.47);
+    margin: 0 auto;
+}
+nav{
+    position: absolute;
+    width: 1200px;
+    height: 80px;
+    background-color: rgb(0, 0, 0, 0.77);
+    
+}
+nav .nav_index{
+    position: relative;
+    width: 800px;
+    height: 40px;
+    /* background-color: rgb(238, 8, 207); */
+    margin: 20px auto;
+}
+nav .nav_index a{
+    position: absolute;
+    line-height: 40px;
+    font-size:14px;
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+}
+nav .nav_index a:hover{
+    border-bottom:4px seagreen solid ;
+}
+.biao1{
+    position:relative;
+    width: 1200px;
+    height: 170px;
+    /* background-color: sienna; */
+    top: 80px;
+    text-align: center;
+    line-height: 127px;
+    font-size: 27px;
+}
+.biao2{
+    position:relative;
+    width: 1200px;
+    /* background-color: sienna; */
+    text-align: center;
+    font-size: 14px;
+}
+.zhuti{
+    position: absolute;
+    width: 857px;
+    /* background-color: sienna; */
+    left: 177px;
+    top: 230px;
+}
+.zhuti div{
+    overflow: hidden;
+    float: left;
+    width: 400px;
+    height: 227px;
+    border: 7px solid rgba(146, 145, 145);
+    background-color: slateblue;
+    margin: 7px;
+}
+.zhuti div img{
+    width: 400px;
+    height: 227px;
+    transition: all 0.7s;
+}
+.zhuti div img:hover{
+    transform: scale(1.27);
+}
+.zhuti .an{
+    width: 27px;
+    height: 27px;
+    border-radius: 50%;
+    background-color: rgb(255, 255, 255,0.0);
+    cursor: pointer;
+    line-height: 27px;
+    text-align: center;
+    transition: all 0.7s;
+    border: 4px solid rgb(11, 163, 223);
+}
+.zhuti .an:hover{
+    transform: scale(1.27);
+}
