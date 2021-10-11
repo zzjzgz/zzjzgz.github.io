@@ -4,7 +4,7 @@
          url('menuFont/iconfont.woff') format('woff'),
          url('menuFont/iconfont.ttf') format('truetype');
   }
-.iconfont{
+.iconfont1{
     position: absolute;
     font-family:"iconfont" !important;
     font-size:47px;font-style:normal;
