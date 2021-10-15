@@ -69,13 +69,13 @@
             top: -727px;
         }
         .ding nav{
-            position: absolute;
-            width: 1920px;
+            /* position: absolute; */
+            width: 1200px;
             height: 150px;
             /* line-height: 150px; */
-            font-size: 20px;
+            font-size: 27px;
             /* background-color: brown; */
-            margin-left: 47px;
+            margin:0 auto;
             margin-top: 37px;
             
         }
