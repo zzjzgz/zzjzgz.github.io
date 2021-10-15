@@ -69,11 +69,11 @@
             top: -727px;
         }
         .ding .dh{
-            width: 100px;
+            width: 87px;
             height: 10px;
             background-color: deepskyblue;
             /* 动画 */
-            line-height: 100px;
+            line-height: 47px;
             font-size: 20px;
             animation-name: move;
             animation-duration: 27s;
