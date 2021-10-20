@@ -69,14 +69,14 @@
             top: -727px;
         }
         .ding .dh{
-            width: 87px;
+            width: 320px;
             height: 10px;
             background-color: deepskyblue;
             /* 动画 */
             line-height: 47px;
             font-size: 20px;
             animation-name: move;
-            animation-duration: 27s;
+            animation-duration: 77s;
             animation-iteration-count: infinite;
             animation-direction: alternate;
         }
