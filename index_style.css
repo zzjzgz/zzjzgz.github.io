@@ -150,7 +150,7 @@
             left: -50px;
         }
         .index .zzj .tou :hover{
-            transform:rotate(180deg);
+            transform:rotate(360deg);
       }
       .index .zzj .tu{
           overflow: hidden;
