@@ -32,9 +32,9 @@
             text-decoration: none
         }
 
-        /* a:hover {
+        a:hover {
             color: #e913e9
-        } */
+        }
 
         button,
         input {
