@@ -45,7 +45,7 @@ input {
 body {
     /* CSS3 抗锯齿形 让文字显示的更加清晰 */
     -webkit-font-smoothing: antialiased;
-    background-color: #f5f5f5;
+    background-color: rgba(60, 160, 206, 0.27);
     font: 12px/1.5 Microsoft YaHei, Heiti SC, tahoma, arial, Hiragino Sans GB, "\5B8B\4F53", sans-serif;
     color: #666
     
@@ -76,22 +76,6 @@ body {
     margin: 0 auto;
     position: relative;
 }
-.index nav{
-    width: 1200px;
-    height: 57px;
-    background-color: rgba(25, 163, 226, 0.47);
-    font-size: 20px;
-}
-.index nav a{
-    line-height: 57px;
-    font-size: 20px;
-    color: rgb(37, 35, 35);
-    margin-left: 30px;
-}
-.index nav a:hover{
-    border-bottom:4px solid rgb(11, 153, 248);
-    /* background-color: rgb(0, 0, 0,0.4); */
-}
 .index .head{
     /* float: left; */
     width: 900px;
@@ -99,13 +83,13 @@ body {
     text-align: center;
     line-height: 100px;
     font-size: 40px;
-    background-color: rgba(250, 250, 250, 0.47);
+    background-color: rgba(250, 250, 250);
 }
 .index .sou{
     position: absolute;
     width: 270px;
     height: 100px;
-    background-color: rgba(250, 250, 250, 0.47);
+    background-color: rgba(250, 250, 250);
     margin-left: 930px;
 }
 .index .sou input{
@@ -119,7 +103,7 @@ body {
     float: left;
     width: 34px;
     height: 34px;
-    background-color: rgba(250, 250, 250, 0.47);
+    background-color: rgb(20, 158, 212);
     margin-top: 34px;
     
 }
@@ -132,7 +116,7 @@ body {
     position:fixed;
     /* float: right; */
     width: 270px;
-    background-color: rgba(250, 250, 250, 0.47);
+    background-color: rgba(250, 250, 250);
     margin-left: 930px;
     margin-top: 20px;
 }
@@ -149,7 +133,7 @@ body {
 .index .zhuti{
     position: absolute;
     width: 900px;
-    background-color: rgba(250, 250, 250, 0.47);
+    background-color: rgba(250, 250, 250);
     margin-top: 20px;
 }
 .index .zhuti:hover{
@@ -161,7 +145,7 @@ body {
 }
 .index .zhuti h2{
     color: rgb(194, 54, 54);
-    border-bottom:1px solid rgba(250, 250, 250, 0.47);
+    border-bottom:1px solid rgba(250, 250, 250);
 }
 .index .zhuti p{
     font-size: 17px;

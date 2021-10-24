@@ -1,0 +1,57 @@
+.ding{
+    position: relative;
+    overflow: hidden;
+    width: 1920px;
+    height: 117px;
+    background-color: rgb(255, 255, 255,0.77);
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+.ding img{
+    position: absolute;
+    width: 1920px;
+    top: -727px;
+}
+.ding .dh{
+    width: 320px;
+    height: 10px;
+    background-color: deepskyblue;
+    /* 动画 */
+    line-height: 47px;
+    font-size: 20px;
+    animation-name: move;
+    animation-duration: 77s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+@keyframes move{
+    0%{
+        transform: translate(-147px,0);
+    }
+    100%{
+        transform: translate(1920px,0);
+    }
+}
+.ding nav{
+    /* position: absolute; */
+    width: 1200px;
+    height: 150px;
+    /* line-height: 150px; */
+    font-size: 27px;
+    /* background-color: brown; */
+    margin:0 auto;
+    margin-top: 37px;
+    
+}
+.ding nav :hover{
+    border-bottom:7px solid rgb(69, 188, 243);
+}
+.ding nav a{
+    display: inline-block;
+    margin-left: 7px;
+    font-size: 18px;
+    color: rgb(0, 0, 0);
+}
+.ding nav a span{
+    color: rgb(0, 0, 0);
+}
