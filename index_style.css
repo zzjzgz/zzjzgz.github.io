@@ -175,5 +175,6 @@
             margin-top: 10px;
         }
         .index .zhuti div ul p :hover{
-            border-bottom:7px solid rgb(69, 188, 243);
+            color: #000;
+            border-bottom:7px solid rgba(228, 102, 102, 0.77);
         }
