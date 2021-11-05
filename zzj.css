@@ -58,15 +58,15 @@
         .index{
             position: relative;
             width: 1200px;
-            height: 747px;
+            height: 647px;
             /* background-color: rgb(9, 177, 255); */
             margin: 0 auto;
         }
         .index .left{
             position: absolute;
             width: 300px;
-            height: 747px;
-            background-color: rgb(255, 255, 255,0.77);
+            height: 647px;
+            background-color: rgba(255, 255, 255, 0.77);
             border-radius: 17px;
         }
         .index .left .tou{
@@ -99,7 +99,7 @@
         }
         .index .left .data{
             width: 300px;
-            height: 577px;
+            height: 477px;
             border-radius: 17px;
         }
         .index .left .data li{
@@ -110,15 +110,15 @@
             line-height: 57px;
             text-align: center;
             cursor: pointer;
-            margin: 0px 5px;
         }
         .index .left .data li:hover{
-            background-color: rgba(255, 255, 255);
+            background-color: rgba(86, 219, 243, 0.27);
+            border-radius: 27px;
         }
         .index .right{
             position: absolute;
             width: 850px;
-            height: 747px;
+            height: 647px;
             left: 327px;
             background-color: rgb(255, 255, 255,0.77);
             border-radius: 17px;
