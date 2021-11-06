@@ -112,8 +112,7 @@
             cursor: pointer;
         }
         .index .left .data li:hover{
-            background-color: rgba(86, 219, 243, 0.27);
-            border-radius: 27px;
+            color: skyblue;
         }
         .index .right{
             position: absolute;
@@ -122,4 +121,76 @@
             left: 327px;
             background-color: rgb(255, 255, 255,0.77);
             border-radius: 17px;
+        }
+        /* 与右边交互的类 */
+        .change{
+            background-color: rgba(86, 219, 243, 0.27);
+            border-radius: 27px;
+        }
+        .w{
+            display: none;
+        }
+        .index .right .right_data{
+            position: relative;
+            width: 700px;
+            height: 400px;
+            /* background-color: rgb(120, 170, 28); */
+            margin: 110px auto;
+        }
+        .index .right .right_data .right_data_left{
+            position: absolute;
+            /* width: 350px; */
+            height: 100%;
+            /* background-color: aqua; */
+        }
+        .index .right .right_data .right_data_left li{
+            /* width: 100%; */
+            height: 80px;
+            line-height: 80px;
+            font-size: 20px;
+            font-family: "楷体";
+            /* background-color: brown; */
+        }
+        .index .right .right_data .right_data_right{
+            position: absolute;
+            
+            height: 100%;
+            /* background-color: rgb(99, 218, 109); */
+            border-left: 2px dashed skyblue;
+            left: 200px;
+            padding-left: 27px;
+        }
+        .index .right .right_data .right_data_right li{
+            /* width: 100%; */
+            height: 80px;
+            line-height: 80px;
+            font-size: 20px;
+            font-family: "楷体";
+            /* background-color: brown; */
+        }
+        .index .right .right_technology{
+            width: 700px;
+            height: 400px;
+            text-align: center;
+            /* background-color: springgreen; */
+            margin: 97px auto;
+        }
+        .index .right  .right_technology li{
+            float: left;
+            width: 175px;
+            height: 227px;
+            font-size: 30px;
+            font-family: "楷体";
+            /* background-color: steelblue; */
+        }
+        .index .right  .right_technology li .img{
+            overflow: hidden;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            /* background-color: seagreen; */
+            border: 2px dashed rgb(0, 0, 0,0.27);
+            /* box-shadow: 5px 5px 17px 1px rgb(0, 0, 0,0.47); */
+            margin: 0 auto;
+            margin-bottom: 7px;
         }
