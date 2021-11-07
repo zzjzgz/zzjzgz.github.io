@@ -1,8 +1,8 @@
 let data = document.querySelector(".data");
 let data_li = data.querySelectorAll("li");
 let w = document.querySelectorAll(".w")
-console.log(data_li);
-console.log(w);
+// console.log(data_li);
+// console.log(w);
 data_li[0].className = 'change';
 for (let i = 0;i<data_li.length;i++){
     data_li[i].onclick = function(){

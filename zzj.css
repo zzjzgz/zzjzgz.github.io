@@ -194,3 +194,71 @@
             margin: 0 auto;
             margin-bottom: 7px;
         }
+        .index .right .right_hobby{
+            position: relative;
+            width: 700px;
+            height: 444px;    
+            /* 图片394px */
+            text-align: center;
+            /* background-color: springgreen; */
+            margin: 77px auto;
+            transition: all 0.7s;
+        }
+        .index .right .right_hobby:hover .an{
+           opacity: 1;
+        }
+        .index .right .right_hobby ul{
+            position: absolute;
+            left: 247px;
+            top: 367px;
+        }
+        .index .right .right_hobby ul li{
+            float: left;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(255, 255, 255,0.57);
+            margin-left: 20px;
+            border-radius: 50%;
+            transition: all 0.7s;
+            cursor: pointer;
+        }
+        .index .right .right_hobby ul li:hover{
+            transform: scale(1.25);
+        }
+        .an{
+            position: absolute;
+            width: 47px;
+            height: 47px;
+            background-color: rgb(255, 255, 255,0.47);
+            line-height: 47px;
+            text-align: center;
+            top: 187px;
+            border-radius: 0px 47px 47px 0px;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.7s;
+        }
+        .an img{
+            transition: all 0.7s;
+        }
+        .an img:hover{
+            transform: scale(1.25);
+        }
+        .index .right .right_hobby .h_right{
+            border-radius: 47px 0px 0px 47px;
+            left: 660px;
+        }
+        .index .right .right_hobby .wen{
+            width: 700px;
+            height: 50px;
+            font-size: 17px;
+            line-height: 50px;
+            text-align: center;
+        }
+        .index .right .right_hobby .img{
+            width: 700px;
+            border: 7px solid rgb(129, 132, 143);
+            
+        }
+
+
