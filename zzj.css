@@ -201,18 +201,68 @@
             /* 图片394px */
             text-align: center;
             /* background-color: springgreen; */
-            margin: 77px auto;
+            margin: 47px auto;
             transition: all 0.7s;
         }
-        .index .right .right_hobby:hover .an{
+        .index .right .right_hobby .right_hobby_index{
+            position: relative;
+        }
+        .index .right .right_hobby .right_hobby_index div{
+            float: left;
+            overflow: hidden;
+            width: 250px;
+            transition: all 1s;
+            cursor: pointer;
+        }
+        .index .right .right_hobby .right_hobby_index img{
+            position: relative;
+            width: 400px;
+            right: 47px;
+            transition: all 1s;
+        }
+        .index .right .right_hobby .right_hobby_index div:hover{
+            width: 400px;
+        }
+        .index .right .right_hobby .right_hobby_index div .wen{
+            /* width: 700px;*/
+            height: 50px; 
+            overflow: hidden;
+            font-size: 14px;
+            line-height: 50px;
+            text-align: center;
+            background-color: skyblue;
+            opacity: 0;
+            transition: all 1s;
+        }
+        .index .right .right_hobby .right_hobby_index div:hover .wen{
+            opacity: 1;
+            
+        }
+        .index .right .right_hobby .right_hobby_index div:hover img{
+            right: 0px;
+        }
+
+
+
+        .index .right .right_competition{
+            position: relative;
+            width: 700px;
+            height: 444px;    
+            /* 图片394px */
+            text-align: center;
+            /* background-color: springgreen; */
+            margin: 47px auto;
+            transition: all 0.7s;
+        }
+        .index .right .right_competition:hover .ang{
            opacity: 1;
         }
-        .index .right .right_hobby ul{
+        .index .right .right_competition ul{
             position: absolute;
             left: 247px;
             top: 367px;
         }
-        .index .right .right_hobby ul li{
+        .index .right .right_competition ul li{
             float: left;
             width: 20px;
             height: 20px;
@@ -222,10 +272,10 @@
             transition: all 0.7s;
             cursor: pointer;
         }
-        .index .right .right_hobby ul li:hover{
+        .index .right .right_competition ul li:hover{
             transform: scale(1.25);
         }
-        .an{
+        .ang{
             position: absolute;
             width: 47px;
             height: 47px;
@@ -238,27 +288,26 @@
             opacity: 0;
             transition: all 0.7s;
         }
-        .an img{
+        .ang img{
             transition: all 0.7s;
         }
-        .an img:hover{
+        .ang img:hover{
             transform: scale(1.25);
         }
-        .index .right .right_hobby .h_right{
+        .index .right .right_competition .h_right{
             border-radius: 47px 0px 0px 47px;
             left: 660px;
         }
-        .index .right .right_hobby .wen{
+        .index .right .right_competition .wen{
             width: 700px;
             height: 50px;
             font-size: 17px;
             line-height: 50px;
             text-align: center;
         }
-        .index .right .right_hobby .img{
+        .index .right .right_competition .img{
             width: 700px;
             border: 7px solid rgb(129, 132, 143);
             
         }
-
 
