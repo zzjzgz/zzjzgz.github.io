@@ -193,6 +193,23 @@ h1{margin-top:20px;font-size:clamp(32px,5vw,56px);font-weight:700;letter-spacing
 .faq-item p{margin-top:8px;font-size:14px;color:var(--text-2);line-height:1.85;max-width:820px}
 .faq-item a{font-weight:550}
 
+/* ---------- friends ---------- */
+.friend-label{margin:0 0 14px;font-size:12px;font-weight:600;letter-spacing:0.14em;color:var(--text-3)}
+.friend-row{display:flex;align-items:center;gap:16px;padding:20px clamp(22px,3vw,32px);
+  color:var(--text);text-decoration:none;
+  transition:background-color var(--dur-1) var(--ease-out)}
+.friend-row:hover{background:var(--hover)}
+.friend-row:active{background:var(--track)}
+.friend-row img{width:44px;height:44px;border-radius:var(--r-thumb);flex:none}
+.friend-text{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
+.friend-text strong{font-size:16px;font-weight:600;letter-spacing:-0.01em}
+.friend-text span{font-size:13.5px;color:var(--text-2);line-height:1.6}
+.friend-row svg{width:16px;height:16px;color:var(--text-3);flex:none;
+  transition:transform var(--dur-2) var(--ease-out-quart)}
+@media (hover:hover) and (pointer:fine){
+  .friend-row:hover svg{transform:translate(2px,-2px)}
+}
+
 /* ---------- footer ---------- */
 footer{margin-top:var(--gap-section);border-top:1px solid var(--hairline);padding:34px 0 48px}
 .foot-in{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
@@ -202,6 +219,10 @@ footer{margin-top:var(--gap-section);border-top:1px solid var(--hairline);paddin
 .foot-meta{font-size:12.5px;color:var(--text-3);line-height:1.8}
 
 /* ---------- responsive ---------- */
+@media (max-width:900px){
+  .nav-links{gap:16px}
+  .nav-links a{font-size:12.5px}
+}
 @media (max-width:680px){
   .nav-links{display:none}
   .nav-in{gap:12px}
@@ -222,6 +243,8 @@ footer{margin-top:var(--gap-section);border-top:1px solid var(--hairline);paddin
   .btn:active,.glass-chip:active{transform:none}
   .screen-stage img{transform:none;transition:opacity var(--dur-2) var(--ease-soft)}
   .seg-thumb{transition:transform var(--dur-1) var(--ease-soft)}
+  .friend-row svg{transition:none}
+  .friend-row:hover svg{transform:none}
   .nav{transition:none}
 }
 @media (prefers-reduced-transparency:reduce){
@@ -251,6 +274,7 @@ footer{margin-top:var(--gap-section);border-top:1px solid var(--hairline);paddin
       <a href="#privacy">隐私</a>
       <a href="#spec">规格</a>
       <a href="#faq">常见问题</a>
+      <a href="#friends">友链</a>
     </nav>
     <a class="btn btn-primary" href="https://gitee.com/zzjzgz/time-trace-code/releases/download/TimeTrace_0.5.6/TimeTrace_0.5.6_x64-setup.exe" target="_blank" rel="noopener noreferrer">下载 v0.5.6</a>
   </div>
@@ -435,6 +459,21 @@ footer{margin-top:var(--gap-section);border-top:1px solid var(--hairline);paddin
       <div class="faq-item"><h3>换电脑或重装怎么办？</h3><p>把数据目录整个复制走即可；设置里也提供导出、备份恢复与整库迁移。应用内更新采用原地覆盖，不会动到设置、记录和快捷方式。</p></div>
       <div class="faq-item"><h3>支持 macOS 或 Linux 吗？</h3><p>目前只支持 Windows 10 / 11（x64），依赖 WebView2 运行时与 Windows 前台窗口接口。界面本身是 Web 技术，但采集层是 Win32 实现，暂未移植到其他平台。</p></div>
       <div class="faq-item"><h3>在哪里看源码和更新日志？</h3><p>源码在 <a href="https://gitcode.com/weixin_51713937/TimeTrace" target="_blank" rel="noopener noreferrer">GitCode 仓库</a>，安装包、历史版本与更新清单在 <a href="https://gitee.com/zzjzgz/time-trace-code" target="_blank" rel="noopener noreferrer">Gitee 发布仓</a>。许可为木兰宽松许可证第 2 版。</p></div>
+    </div>
+  </section>
+
+  <!-- 友情链接 -->
+  <section class="block wrap" id="friends" aria-labelledby="friendsTitle">
+    <h2 class="friend-label" id="friendsTitle">友情链接</h2>
+    <div class="panel">
+      <a class="friend-row" href="https://yujian.cystation.site" target="_blank" rel="noopener noreferrer">
+        <img src="assets/friends/yujian-logo.svg" width="44" height="44" alt="屿见官网 logo">
+        <span class="friend-text">
+          <strong>屿见官网</strong>
+          <span>以优越的技术为大家提供更优渥的平台</span>
+        </span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+      </a>
     </div>
   </section>
 

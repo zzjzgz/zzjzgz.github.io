@@ -27,6 +27,7 @@
 | — | 数据属于你 | `#data` | 支撑信任链 | P1 支撑 | P3 之后 |
 | — | 规格 | `#spec` | 技术核对 | P1 支撑 | P4 之前 |
 | — | FAQ | `#faq` | 扫除剩余疑问 | P1 支撑 | P5 之后 |
+| — | 友情链接 | `#friends` | 单条互推（屿见官网） | P1 支撑 | 顶部导航「友链」/ FAQ 之后 |
 
 ## 3. 设计令牌
 
@@ -91,12 +92,14 @@
 | 安装包直链 | Gitee Releases `TimeTrace_0.5.6/TimeTrace_0.5.6_x64-setup.exe` | 用户指定；实查 302 → foruda.gitee.com 附件 |
 | 其他产物 | Gitee `releases/v0.5.6` 目录 | 仅在 CTA 提示文案中提及；同模式直链实查 404，不设按钮 |
 | 许可 | 木兰宽松许可证 v2 | `LICENSE` |
+| 友链 | 屿见官网 · `https://yujian.cystation.site` · 以优越的技术为大家提供更优渥的平台 | 用户提供，地址实查 200 |
 
 ## 8. 资源与图标
 
 - 图标：内联 SVG，24 网格、1.6–1.8px 描边、`currentColor`；全站 4 处（品牌时钟、下载箭头、外链箭头）。禁止 emoji 与字符图标。
 - 图片：`assets/screens/{today,trend,apps,events}.png`，1440×900，由 `_workflow/capture-screens.cjs` 从当前源码构建的 dist 实际运行截取；**不是仓库遗留的历史截图**。全部填了 `alt`。
 - 字体：系统字体栈（`--font`），无外链字体、无本地 woff2。
+- 友链 logo：`assets/friends/yujian-logo.svg`（从 `https://home.cystation.site/images/logo.svg` 下载到本地，422 字节，SVG 内仅 xmlns 与品牌图形）。**禁止改成外链 `<img src="https://…">`**，门禁 `external_deps` 会判 FAIL。
 - 截图证据：`screenshots/` 四张（三档整页 + 1440 首屏）。
 
 ## 9. 已知限制
@@ -108,7 +111,7 @@
 5. 界面截图使用内置演示快照，页面已明确标注「不是任何真实用户的记录」；若日后换成真实数据截图，需同步改图注。
 6. `_workflow/` 以下划线开头，GitHub Pages 默认 Jekyll 会跳过该目录，过程文档与采集脚本不会出现在公网站点（这是有意为之）；若添加 `.nojekyll` 则会一并公开。
 7. 未添加 `.nojekyll`：站点依赖 Jekyll 对 `assets/`、`screenshots/` 的正常复制行为；若日后引入下划线命名的资源目录，需补 `.nojekyll`。
-8. **本次未执行 `git commit` / `git push`**：文件仅落在本机工作区，线上站点仍为 404，需用户明确授权后才提交推送。
+8. 首次交付于 2026-11-06 16:27 提交 `7af70e7` 并推送；16:58 追加的友情链接区段、banner「友链」导航与 README 已随本次提交一并推送。线上 `https://zzjzgz.github.io` 已验证 200，四张产品图、友链 logo 与下载直链均可达。后续改动仍需用户明确授权。
 9. 未验证浏览器：旧版 Safari / IE；目标为 Chromium 与 WebKit 现代版本。
 10. 仅安装向导有发行版直链（302 已核实）；免安装单文件与 MSI 的同模式直链实查 404，故这两个按钮指向 `releases/v0.5.6` 目录页。
 10. 下载区只保留一个 setup 按钮；免安装单文件与 MSI 的同模式直链实查 404，故不设按钮，仅在提示文案中给出 `releases/v0.5.6` 目录。顶部导航与首屏两处入口与 CTA 同链，点击即下载，不再经过页内锚点。

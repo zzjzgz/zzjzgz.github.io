@@ -22,6 +22,8 @@ Design Context 原样取自 `00-brief.md`：受众为隐私敏感的 Windows 用
 5. `_workflow/capture-page.cjs` 增加「截前滚回顶部」与首屏视口图，截图证据更可核对。
 6. 按用户指定把安装向导换成发行版直链；实查另两种产物直链 404 后保留目录页，并同步全部交接文档口径（第一轮同步，最终口径由 `_workflow/sync_single_setup.py` 统一并带硬断言）。
 7. 按用户后续指令把下载区收敛为单个 setup 按钮，顶部导航与首屏「下载 Windows 版」改为同链直达下载；口径同步与硬断言脚本 `_workflow/sync_single_setup.py`。
+8. 新增友情链接区段（屿见官网）：放在 FAQ 之后、页脚之前，logo 下载到本地保持零外链；位置与外链约束由 `_workflow/sync_friends.py` 硬断言钉住。
+9. 按用户指令在顶部导航（banner）补「友链」锚点指向 `#friends`；收紧 900px 以下导航间距以容纳 6 个链接。
 
 ## 复跑证据
 `node _workflow/capture-page.cjs` 复跑后：1366 / 1440 / 1920 三档横向溢出均为 `false`，图片 5/5 加载，视图切换 `1/1`，console error 均为 0。明细见 `_workflow/viewport-check.json`。

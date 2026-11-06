@@ -122,6 +122,7 @@ const server = http.createServer((req, res) => {
     await page.screenshot({ path: file, fullPage: true });
     if (w === 1440) {
       await page.screenshot({ path: path.join(SHOT_DIR, "hero-1440x900.png"), fullPage: false });
+      await page.locator("#friends").screenshot({ path: path.join(SHOT_DIR, "friends-1440x900.png") });
     }
     const bytes = fs.statSync(file).size;
 
