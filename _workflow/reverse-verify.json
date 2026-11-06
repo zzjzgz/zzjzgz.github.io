@@ -1,0 +1,18 @@
+{
+  "gate": "C:\\Users\\zzj\\.workbuddy\\skills\\ui-design-pipeline\\scripts\\check_design_pack.py",
+  "sha256_before": "2a6e80e63c9d9a257e84010c20e56d3ede1dcf1870646f8f01bfe0fd161ccfae",
+  "sha256_after_restore": "2a6e80e63c9d9a257e84010c20e56d3ede1dcf1870646f8f01bfe0fd161ccfae",
+  "byte_identical_after_restore": true,
+  "mutation": "在 .panel 规则中把 var(--surface) 替换为 #ffffff（:root 外硬编码色）",
+  "broken": {
+    "exit_code": 1,
+    "output": "=== UI 设计稿交付包校验 ===\n目录：D:\\JavaCode\\奇思妙想\\TimeTrace\\zzjzgz.github.io\n模式：strict\n--------------------------------------------------------\n[FAIL] hardcoded_colors       组件内硬编码色 1 处（1 种色值）（应改为 var(--…)）\n       · #ffffff × 1\n[PASS] files_screenshots      截图 4 张\n[PASS] tokens_schema          tokens.json 结构完整\n[PASS] tokens_consistency     tokens 色值与 HTML 一致率 14/14（100%）\n[PASS] placeholder_text       无占位文案\n[PASS] external_deps          无外部依赖\n       · 外部超链接 11 个（不影响离线）\n[PASS] contrast               3 组文本对比度全部达标\n       · ✅ --text-primary #6e6e73 / --bg = 4.66:1（阈值 4.5）\n       · ✅ --text-secondary #6e6e73 / --bg = 4.66:1（阈值 4.5）\n       · ✅ --text-placeholder #86868b / --surface = 3.62:1（阈值 3.0）\n[INFO] html_pages             检测到 5 个页面\n[INFO] html_size              index.html 31.9 KB\n--------------------------------------------------------\nFAIL 1 | WARN 0 | PASS 6\n结论：FAIL ❌"
+  },
+  "restored": {
+    "exit_code": 0,
+    "output": "=== UI 设计稿交付包校验 ===\n目录：D:\\JavaCode\\奇思妙想\\TimeTrace\\zzjzgz.github.io\n模式：strict\n--------------------------------------------------------\n[PASS] files_screenshots      截图 4 张\n[PASS] tokens_schema          tokens.json 结构完整\n[PASS] tokens_consistency     tokens 色值与 HTML 一致率 14/14（100%）\n[PASS] placeholder_text       无占位文案\n[PASS] external_deps          无外部依赖\n       · 外部超链接 11 个（不影响离线）\n[PASS] hardcoded_colors       颜色全部走变量\n[PASS] contrast               3 组文本对比度全部达标\n       · ✅ --text-primary #6e6e73 / --bg = 4.66:1（阈值 4.5）\n       · ✅ --text-secondary #6e6e73 / --bg = 4.66:1（阈值 4.5）\n       · ✅ --text-placeholder #86868b / --surface = 3.62:1（阈值 3.0）\n[INFO] html_pages             检测到 5 个页面\n[INFO] html_size              index.html 31.9 KB\n--------------------------------------------------------\nFAIL 0 | WARN 0 | PASS 7\n结论：PASS ✅"
+  },
+  "assertion_red_when_broken": true,
+  "assertion_green_when_restored": true,
+  "verdict": "PASS"
+}

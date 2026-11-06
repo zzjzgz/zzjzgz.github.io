@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="TimeTrace · 一刻 —— 本地优先的 Windows 应用使用时长统计工具。记录只写本机 SQLite，无账号、无遥测、完全免费。">
+<meta name="theme-color" content="#f5f5f7">
+<link rel="icon" href="data:,">
+<title>TimeTrace · 一刻 — 把电脑时间，记清楚</title>
+<style>
+:root{
+  --bg:#f5f5f7; --surface:#ffffff; --hover:#fbfbfd;
+  --text:#1d1d1f; --text-body:#424245; --text-2:#6e6e73; --text-3:#6e6e73; --text-4:#86868b;
+  --faint:#d2d2d7; --hairline:rgba(0,0,0,0.07); --track:#e8e8ed;
+  --accent:#0071e3; --accent-link:#0066cc; --indigo:#5e5ce6; --live:#30d158;
+  --heat:#ff6b00; --heat-bg:rgba(255,107,0,0.1); --on-accent:#ffffff;
+  --grad-cta:linear-gradient(135deg,#0071e3 0%,#5e5ce6 100%);
+  --font:-apple-system,BlinkMacSystemFont,'SF Pro Text','SF Pro Display','Helvetica Neue','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+  --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
+  --r-pill:999px; --r-chip:6px; --r-thumb:12px; --r-card:18px; --r-panel:22px; --r-hero:26px; --r-sheet:16px;
+  --sh-card:0 1px 2px rgba(0,0,0,0.04),0 8px 24px rgba(0,0,0,0.05);
+  --sh-panel:0 1px 3px rgba(0,0,0,0.05),0 14px 40px rgba(0,0,0,0.05);
+  --sh-lift:0 12px 32px rgba(0,0,0,0.1);
+  --sh-cta:0 20px 54px rgba(0,113,227,0.24);
+  --sh-overlay:0 2px 8px rgba(0,0,0,0.10),0 30px 80px rgba(0,0,0,0.24);
+  --max-read:720px; --max-grid:1080px; --pad-x:22px; --gap-section:clamp(48px,7vw,88px);
+  --dur-1:120ms; --dur-2:180ms; --dur-3:280ms; --dur-4:420ms;
+  --ease-out:cubic-bezier(0.23,1,0.32,1);
+  --ease-in-out:cubic-bezier(0.77,0,0.175,1);
+  --ease-spring:cubic-bezier(0.32,0.72,0,1);
+  --ease-out-quart:cubic-bezier(0.25,1,0.5,1);
+  --ease-soft:ease;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);font-family:var(--font);
+  font-optical-sizing:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  line-height:1.6;overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+a{color:var(--accent-link);text-decoration:none}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:var(--r-chip)}
+button{font-family:inherit}
+h1,h2,h3,p,figure{margin:0}
+.wrap{max-width:var(--max-grid);margin:0 auto;padding:0 var(--pad-x)}
+.narrow{max-width:var(--max-read);margin:0 auto;padding:0 var(--pad-x)}
+section{scroll-margin-top:80px}
+.num{font-variant-numeric:tabular-nums}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* ---------- sticky glass nav ---------- */
+.nav{position:sticky;top:0;z-index:50;background:rgba(245,245,247,0.72);
+  backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid transparent;transition:border-color var(--dur-3) var(--ease-out),box-shadow var(--dur-3) var(--ease-out)}
+.nav.scrolled{border-bottom-color:var(--hairline);box-shadow:0 1px 12px rgba(0,0,0,0.04)}
+.nav-in{max-width:var(--max-grid);margin:0 auto;padding:0 var(--pad-x);height:60px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:inline-flex;align-items:center;gap:9px;color:var(--text);font-size:15px;font-weight:600;letter-spacing:-0.01em;white-space:nowrap}
+.brand svg{width:21px;height:21px;flex:none;color:var(--text)}
+.brand .cn{font-weight:400;color:var(--text-2);font-size:13px}
+.nav-links{display:flex;align-items:center;gap:26px;flex:1;justify-content:center}
+.nav-links a{font-size:13px;color:var(--text-2);transition:color var(--dur-1) var(--ease-out)}
+.nav-links a:hover{color:var(--text)}
+
+/* ---------- buttons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;
+  padding:0 22px;border-radius:var(--r-pill);font-size:14px;font-weight:600;white-space:nowrap;
+  transition:transform var(--dur-1) var(--ease-out),background-color var(--dur-1) var(--ease-out),box-shadow var(--dur-2) var(--ease-out)}
+.btn:active{transform:scale(0.97)}
+.btn-primary{background:var(--accent);color:var(--on-accent);box-shadow:0 1px 2px rgba(0,0,0,0.06)}
+.btn-primary:hover{background:var(--accent-link)}
+.btn-quiet{background:var(--surface);color:var(--text);border:1px solid var(--hairline);box-shadow:0 1px 2px rgba(0,0,0,0.04)}
+.btn-quiet:hover{background:var(--hover)}
+.btn svg{width:15px;height:15px;flex:none}
+.nav .btn{min-height:40px;padding:0 18px;font-size:13px}
+
+/* ---------- hero ---------- */
+.hero{padding:clamp(56px,9vw,104px) 0 0;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:600;
+  letter-spacing:0.14em;color:var(--text-2)}
+.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--live);flex:none}
+h1{margin-top:20px;font-size:clamp(32px,5vw,56px);font-weight:700;letter-spacing:-0.045em;line-height:1.12;text-wrap:balance}
+.lede{max-width:640px;margin:22px auto 0;font-size:clamp(16px,2.3vw,19px);color:var(--text-body);line-height:1.75}
+.lede strong{font-weight:600;color:var(--text)}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+.hero-meta{margin-top:22px;font-size:13px;color:var(--text-3);line-height:1.9}
+.hero-meta .sep{color:var(--faint);margin:0 8px}
+.hero-art{position:relative;margin:clamp(40px,6vw,68px) auto 0;width:calc(100% - 2 * var(--pad-x));max-width:1080px;
+  border-radius:var(--r-hero);overflow:hidden;background:var(--surface);box-shadow:var(--sh-panel);
+  transition:transform var(--dur-2) var(--ease-out),box-shadow var(--dur-2) var(--ease-out)}
+.hero-art img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top center}
+.source-badge{position:absolute;left:18px;bottom:18px;display:inline-flex;align-items:center;gap:8px;
+  padding:9px 15px;border-radius:var(--r-pill);font-size:12px;font-weight:550;letter-spacing:0.01em;
+  color:var(--on-accent);background:rgba(29,29,31,0.62);border:1px solid rgba(255,255,255,0.18);
+  backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px)}
+.source-badge .mark{width:6px;height:6px;border-radius:50%;background:var(--live);flex:none}
+@media (hover:hover) and (pointer:fine){.hero-art:hover{transform:translateY(-3px);box-shadow:var(--sh-lift)}}
+
+/* ---------- section headings ---------- */
+.block{padding-top:var(--gap-section)}
+.block-head{max-width:720px;margin:0 auto clamp(28px,4vw,44px);text-align:center}
+.block-head .kicker{font-size:12px;font-weight:600;letter-spacing:0.14em;color:var(--text-3)}
+.block-head h2{margin-top:14px;font-size:clamp(26px,4vw,42px);font-weight:700;letter-spacing:-0.032em;line-height:1.18}
+.block-head p{margin-top:14px;font-size:clamp(15px,2vw,17px);color:var(--text-2);line-height:1.75}
+
+/* ---------- unified panel (anti-fragmentation) ---------- */
+.panel{background:var(--surface);border-radius:var(--r-panel);box-shadow:var(--sh-panel);overflow:hidden}
+.row{padding:clamp(20px,2.6vw,28px) clamp(22px,3vw,34px)}
+.row + .row{border-top:1px solid var(--hairline)}
+.row-grid{display:grid;grid-template-columns:72px 1fr;gap:clamp(12px,2vw,24px);align-items:start}
+.row-n{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--faint);padding-top:5px;letter-spacing:0.04em}
+.row h3{font-size:clamp(17px,2vw,20px);font-weight:600;letter-spacing:-0.015em;line-height:1.4}
+.row p{margin-top:8px;font-size:14.5px;color:var(--text-2);line-height:1.8;max-width:720px}
+.row .detail{margin-top:10px;font-size:13px;color:var(--text-3);line-height:1.8}
+.prose{font-size:16px;line-height:1.85;color:var(--text-body)}
+
+/* ---------- views switcher ---------- */
+.seg{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  width:min(100%,440px);margin:0 auto clamp(24px,3vw,32px);padding:4px;
+  background:var(--track);border-radius:var(--r-pill)}
+.seg-thumb{position:absolute;top:4px;bottom:4px;left:4px;width:calc((100% - 8px)/4);
+  border-radius:var(--r-pill);background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,0.12);
+  transition:transform var(--dur-2) var(--ease-out-quart);pointer-events:none}
+.seg[data-active="1"] .seg-thumb{transform:translateX(100%)}
+.seg[data-active="2"] .seg-thumb{transform:translateX(200%)}
+.seg[data-active="3"] .seg-thumb{transform:translateX(300%)}
+.seg button{position:relative;z-index:1;height:44px;border:0;background:transparent;cursor:pointer;
+  border-radius:var(--r-pill);font-size:14px;font-weight:500;color:var(--text-2);
+  transition:color var(--dur-2) var(--ease-out-quart);-webkit-tap-highlight-color:transparent}
+.seg button[aria-selected="true"]{color:var(--text);font-weight:600}
+.screen-stage{position:relative;width:100%;aspect-ratio:16/10;border-radius:var(--r-card);
+  overflow:hidden;background:var(--surface);box-shadow:var(--sh-panel)}
+.screen-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;
+  opacity:0;transform:translateY(8px);
+  transition:opacity var(--dur-3) var(--ease-out),transform var(--dur-3) var(--ease-out)}
+.screen-stage img.is-active{opacity:1;transform:none}
+.img-fallback{display:none;position:absolute;inset:0;align-items:center;justify-content:center;flex-direction:column;gap:12px;
+  text-align:center;padding:30px;font-size:14px;color:var(--text-2);line-height:1.8;background:var(--surface)}
+.screen-stage.img-error .img-fallback,.hero-art.img-error .img-fallback{display:flex}
+.screen-cap{margin-top:18px;text-align:center;font-size:14px;color:var(--text-2);line-height:1.8;min-height:50px}
+.screen-note{margin-top:10px;text-align:center;font-size:12.5px;color:var(--text-3);line-height:1.8}
+
+/* ---------- privacy two columns ---------- */
+.split{display:grid;grid-template-columns:1fr 1fr}
+.split > div{padding:clamp(24px,3vw,34px)}
+.split > div + div{border-left:1px solid var(--hairline)}
+.split h3{font-size:16px;font-weight:600;letter-spacing:-0.01em}
+.split .tag{display:inline-block;margin-bottom:14px;font-size:11.5px;font-weight:600;letter-spacing:0.06em;
+  padding:4px 11px;border-radius:var(--r-pill);color:var(--text-2);background:rgba(0,0,0,0.045)}
+.split ul{list-style:none;margin:18px 0 0;padding:0}
+.split li{position:relative;padding:9px 0 9px 20px;font-size:14px;color:var(--text-body);line-height:1.7}
+.split li + li{border-top:1px solid var(--hairline)}
+.split li::before{content:"";position:absolute;left:2px;top:18px;width:5px;height:5px;border-radius:50%;background:var(--faint)}
+.split .no li::before{background:var(--live)}
+.split-foot{padding:18px clamp(24px,3vw,34px);border-top:1px solid var(--hairline);
+  font-size:13.5px;color:var(--text-2);line-height:1.8;background:var(--hover)}
+
+/* ---------- spec grid ---------- */
+.spec-grid{display:grid;grid-template-columns:repeat(2,1fr)}
+.spec-item{padding:22px clamp(22px,3vw,32px)}
+.spec-item:nth-child(odd){border-right:1px solid var(--hairline)}
+.spec-item:nth-child(n+3){border-top:1px solid var(--hairline)}
+.spec-item dt{font-size:12px;font-weight:600;letter-spacing:0.08em;color:var(--text-3)}
+.spec-item dd{margin:8px 0 0;font-size:15px;color:var(--text);line-height:1.7;font-weight:500}
+.spec-item dd small{display:block;margin-top:5px;font-size:13px;font-weight:400;color:var(--text-2);line-height:1.7}
+
+/* ---------- CTA ---------- */
+.cta{position:relative;overflow:hidden;border-radius:var(--r-hero);padding:clamp(32px,5vw,56px);
+  background:var(--grad-cta);box-shadow:var(--sh-cta);color:var(--on-accent)}
+.cta .orb{position:absolute;border-radius:50%;pointer-events:none}
+.cta .orb-a{width:280px;height:280px;top:-110px;right:-50px;background:rgba(255,255,255,0.18);filter:blur(46px)}
+.cta .orb-b{width:220px;height:220px;bottom:-100px;left:10%;background:rgba(120,80,255,0.5);filter:blur(50px)}
+.cta-in{position:relative}
+.cta .kicker{font-size:12px;font-weight:600;letter-spacing:0.14em;color:rgba(255,255,255,0.8)}
+.cta h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-0.032em;line-height:1.2}
+.cta p{margin-top:14px;font-size:15px;color:rgba(255,255,255,0.86);line-height:1.8;max-width:600px}
+.cta-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.glass-chip{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;
+  border-radius:var(--r-pill);font-size:13.5px;font-weight:600;color:var(--on-accent);
+  background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.22);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  transition:transform var(--dur-1) var(--ease-out),background-color var(--dur-1) var(--ease-out)}
+.glass-chip:active{transform:scale(0.97)}
+.glass-chip:hover{background:rgba(255,255,255,0.24)}
+.glass-chip svg{width:14px;height:14px}
+.cta-note{margin-top:22px;font-size:12.5px;color:rgba(255,255,255,0.78);line-height:1.8;max-width:680px}
+
+/* ---------- faq ---------- */
+.faq-item{padding:22px clamp(22px,3vw,32px)}
+.faq-item + .faq-item{border-top:1px solid var(--hairline)}
+.faq-item h3{font-size:16px;font-weight:600;letter-spacing:-0.01em}
+.faq-item p{margin-top:8px;font-size:14px;color:var(--text-2);line-height:1.85;max-width:820px}
+.faq-item a{font-weight:550}
+
+/* ---------- footer ---------- */
+footer{margin-top:var(--gap-section);border-top:1px solid var(--hairline);padding:34px 0 48px}
+.foot-in{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.foot-links{display:flex;gap:22px;flex-wrap:wrap}
+.foot-links a{font-size:13px;color:var(--text-2);transition:color var(--dur-1) var(--ease-out)}
+.foot-links a:hover{color:var(--accent-link)}
+.foot-meta{font-size:12.5px;color:var(--text-3);line-height:1.8}
+
+/* ---------- responsive ---------- */
+@media (max-width:680px){
+  .nav-links{display:none}
+  .nav-in{gap:12px}
+  .row-grid{grid-template-columns:1fr;gap:6px}
+  .row-n{padding-top:0}
+  .split,.spec-grid{grid-template-columns:1fr}
+  .split > div + div{border-left:0;border-top:1px solid var(--hairline)}
+  .spec-item:nth-child(odd){border-right:0}
+  .spec-item + .spec-item{border-top:1px solid var(--hairline)}
+  .hero-meta .sep{display:block;height:0;overflow:hidden}
+  .source-badge{left:12px;bottom:12px;font-size:11px;padding:7px 12px}
+  .cta-actions{flex-direction:column;align-items:stretch}
+  .seg button{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .hero-art:hover,.lift:hover{transform:none}
+  .btn:active,.glass-chip:active{transform:none}
+  .screen-stage img{transform:none;transition:opacity var(--dur-2) var(--ease-soft)}
+  .seg-thumb{transition:transform var(--dur-1) var(--ease-soft)}
+  .nav{transition:none}
+}
+@media (prefers-reduced-transparency:reduce){
+  .nav{background:var(--bg);backdrop-filter:none;-webkit-backdrop-filter:none}
+  .source-badge,.glass-chip{background:var(--surface);color:var(--text);backdrop-filter:none;-webkit-backdrop-filter:none;border-color:var(--hairline)}
+  .cta .glass-chip{background:var(--surface);color:var(--accent-link)}
+  .cta .orb{display:none}
+}
+@media (prefers-contrast:more){
+  .nav{background:var(--surface);backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom-color:rgba(0,0,0,0.35)}
+  .panel,.hero-art,.screen-stage{border:1px solid rgba(0,0,0,0.35)}
+  .row + .row,.split-foot{border-top-color:rgba(0,0,0,0.35)}
+}
+</style>
+</head>
+<body>
+
+<header class="nav" id="siteNav">
+  <div class="nav-in">
+    <a class="brand" href="#top" aria-label="TimeTrace 一刻，回到顶部">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>
+      <span>TimeTrace</span><span class="cn">一刻</span>
+    </a>
+    <nav class="nav-links" aria-label="主导航">
+      <a href="#why">为什么</a>
+      <a href="#views">界面</a>
+      <a href="#privacy">隐私</a>
+      <a href="#spec">规格</a>
+      <a href="#faq">常见问题</a>
+    </nav>
+    <a class="btn btn-primary" href="https://gitee.com/zzjzgz/time-trace-code/releases/download/TimeTrace_0.5.6/TimeTrace_0.5.6_x64-setup.exe" target="_blank" rel="noopener noreferrer">下载 v0.5.6</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- P1 · 首页 -->
+  <section class="hero" data-pid="p1-home" aria-labelledby="heroTitle">
+    <div class="narrow">
+      <div class="eyebrow"><span class="dot" aria-hidden="true"></span>本地优先 · 无账号 · 无遥测</div>
+      <h1 id="heroTitle">把电脑时间，记清楚。</h1>
+      <p class="lede">TimeTrace 只做一件事：<strong>把你在各个应用上花的时间记清楚，并如实展示</strong>。它不评判效率，也不上传任何东西——所有记录都躺在你自己磁盘上的一个 SQLite 文件里，你随时可以打开、导出、搬走。</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://gitee.com/zzjzgz/time-trace-code/releases/download/TimeTrace_0.5.6/TimeTrace_0.5.6_x64-setup.exe" target="_blank" rel="noopener noreferrer">下载 Windows 版
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>
+        </a>
+        <a class="btn btn-quiet" href="https://gitcode.com/weixin_51713937/TimeTrace" target="_blank" rel="noopener noreferrer">查看源码</a>
+      </div>
+      <p class="hero-meta num">v0.5.6<span class="sep">·</span>2026-11-04<span class="sep">·</span>免安装单文件约 6 MB<span class="sep">·</span>Windows 10 / 11<span class="sep">·</span>完全免费</p>
+    </div>
+    <figure class="hero-art lift">
+      <img src="assets/screens/today.png" width="1440" height="900" data-img alt="TimeTrace 0.5.6「今天」视图：今日总时长 6 时 12 分、分类构成、使用最多的应用、系统事件与本周节奏">
+      <div class="img-fallback" role="status"><span>界面预览未能加载。</span><a href="https://gitee.com/zzjzgz/time-trace-code" target="_blank" rel="noopener noreferrer">到发布仓查看版本说明</a></div>
+      <figcaption class="source-badge"><span class="mark" aria-hidden="true"></span>界面截图 · 由当前构建 v0.5.6 实际运行截取</figcaption>
+    </figure>
+  </section>
+
+  <!-- P2 · 为什么 -->
+  <section class="block wrap" id="why" data-pid="p2-why" aria-labelledby="whyTitle">
+    <div class="block-head">
+      <div class="kicker">三个「不」</div>
+      <h2 id="whyTitle">少了这些，才敢叫本地工具。</h2>
+      <p>市面上的计时工具大多要账号、要同步、要告诉你该怎么做。TimeTrace 把这些都拿掉了。</p>
+    </div>
+    <div class="panel">
+      <div class="row row-grid">
+        <div class="row-n">01</div>
+        <div>
+          <h3>不上传</h3>
+          <p>记录只写本机 SQLite，无账号、无遥测，默认不联网。唯一可能的出站请求是读取一次公开的更新清单，而且默认不开自动检查——设置里还能切成「完全离线模式」。</p>
+          <p class="detail">标题栏会直接标出当前状态：「数据只存本地」「仅检查更新」或「完全离线」。</p>
+        </div>
+      </div>
+      <div class="row row-grid">
+        <div class="row-n">02</div>
+        <div>
+          <h3>不评判</h3>
+          <p>不打分效率、不设目标、不推送提醒。「在场」是前台待了多久，「活跃」是其中有键鼠输入或系统在放声音的那部分——两者分开记，闲置时间照记，数字该怎么来就怎么来。</p>
+          <p class="detail">窗口标题默认不记录；只有你在设置里显式打开才记。</p>
+        </div>
+      </div>
+      <div class="row row-grid">
+        <div class="row-n">03</div>
+        <div>
+          <h3>不收费</h3>
+          <p>完全免费：无付费墙、无订阅、无广告、无功能阉割、无账号体系。源码以木兰宽松许可证第 2 版开放，想看它怎么统计的，可以自己读、自己编译。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P3 · 界面 -->
+  <section class="block wrap" id="views" data-pid="p3-views" aria-labelledby="viewsTitle">
+    <div class="block-head">
+      <div class="kicker">四个视图</div>
+      <h2 id="viewsTitle">从「今天」到「事件」，逐层看下去。</h2>
+      <p>顶部章节导航直接切换，也可以用 <span class="mono">#today</span> <span class="mono">#trend</span> <span class="mono">#apps</span> <span class="mono">#events</span> 直达。历史回看支持最近 90 天。</p>
+    </div>
+    <div class="seg" id="viewSeg" data-active="0" role="tablist" aria-label="切换界面视图">
+      <span class="seg-thumb" aria-hidden="true"></span>
+      <button type="button" role="tab" aria-selected="true" aria-controls="viewStage" data-view="0">今天</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="viewStage" data-view="1">趋势</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="viewStage" data-view="2">应用</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="viewStage" data-view="3">事件</button>
+    </div>
+    <div class="screen-stage" id="viewStage" role="tabpanel" aria-live="polite">
+      <img class="is-active" src="assets/screens/today.png" width="1440" height="900" data-img alt="今天视图：今日总时长、分类构成、使用最多的应用、系统事件、本周节奏">
+      <img src="assets/screens/trend.png" width="1440" height="900" data-img alt="趋势视图：每日分类折线、本周构成、今日分时柱状图">
+      <img src="assets/screens/apps.png" width="1440" height="900" data-img alt="应用视图：按应用排行的时长列表">
+      <img src="assets/screens/events.png" width="1440" height="900" data-img alt="事件视图：按时间顺序排列的系统事件流">
+      <div class="img-fallback" role="status"><span>界面预览未能加载。</span><a href="https://gitee.com/zzjzgz/time-trace-code/tree/master/releases/v0.5.6" target="_blank" rel="noopener noreferrer">到发布仓查看版本说明</a></div>
+    </div>
+    <p class="screen-cap" id="viewCap">今天：总时长、分类构成、使用最多的应用、系统事件与本周节奏，一屏看完。</p>
+    <p class="screen-note">以上界面截图由 TimeTrace v0.5.6 当前源码构建后实际运行截取；画面中的数据为内置演示快照，不是任何真实用户的记录。</p>
+  </section>
+
+  <!-- 数据属于你 -->
+  <section class="block wrap" id="data" aria-labelledby="dataTitle">
+    <div class="block-head">
+      <div class="kicker">数据属于你</div>
+      <h2 id="dataTitle">能打开，能导出，能搬走，也能彻底删掉。</h2>
+      <p>数据目录默认在本机用户目录，路径可以自己改。下面这些操作全在本地完成，不经过任何服务器。</p>
+    </div>
+    <div class="panel">
+      <div class="row row-grid"><div class="row-n">01</div><div><h3>导出 CSV / JSON</h3><p>把记录导成通用格式，想用 Excel、Python 或别的东西分析都行。导出内容默认不含窗口标题。</p></div></div>
+      <div class="row row-grid"><div class="row-n">02</div><div><h3>立即备份与恢复</h3><p>一键备份当前数据库，也能从备份文件恢复。备份留在你自己指定的目录里。</p></div></div>
+      <div class="row row-grid"><div class="row-n">03</div><div><h3>整库迁移</h3><p>换数据目录时按「复制 → 校验 → 写设置 → 切换连接 → 删旧库」的顺序执行，先确认新库完整才动旧的。</p></div></div>
+      <div class="row row-grid"><div class="row-n">04</div><div><h3>清除全部数据</h3><p>先列出将被删除的条数，再要求手动输入「清除」才可执行；底层用安全擦除、VACUUM 与 WAL 截断处理残留。</p></div></div>
+    </div>
+  </section>
+
+  <!-- P4 · 隐私 -->
+  <section class="block wrap" id="privacy" data-pid="p4-privacy" aria-labelledby="privacyTitle">
+    <div class="block-head">
+      <div class="kicker">记录边界</div>
+      <h2 id="privacyTitle">记什么、不记什么，写清楚。</h2>
+      <p>不用猜，也不用读隐私政策里那段绕来绕去的话。</p>
+    </div>
+    <div class="panel">
+      <div class="split">
+        <div>
+          <span class="tag">会记录</span>
+          <h3>只记时间，不记内容</h3>
+          <ul>
+            <li>前台应用时长：每秒采样一次，连续使用合并成一段</li>
+            <li>在场 / 活跃：两个口径分开统计</li>
+            <li>系统事件：开机、闲置、休眠唤醒、锁屏解锁、暂停继续</li>
+            <li>应用分类：工作 / 学习 / 娱乐 / 浏览 / 其他，可自行改</li>
+            <li>窗口标题：默认关闭，需显式打开</li>
+          </ul>
+        </div>
+        <div>
+          <span class="tag">不记录</span>
+          <h3>这些内容一律不碰</h3>
+          <ul class="no">
+            <li>键盘输入内容</li>
+            <li>截图</li>
+            <li>剪贴板</li>
+            <li>浏览记录</li>
+            <li>任何设备标识</li>
+          </ul>
+        </div>
+      </div>
+      <div class="split-foot">前台窗口所属进程每秒采样一次，只用于判定「哪个应用在前台」；采样结果不离开本机，也不生成任何可供远程查询的标识。</div>
+    </div>
+  </section>
+
+  <!-- 规格 -->
+  <section class="block wrap" id="spec" aria-labelledby="specTitle">
+    <div class="block-head">
+      <div class="kicker">规格</div>
+      <h2 id="specTitle">一个小到不需要管理的程序。</h2>
+    </div>
+    <dl class="panel spec-grid">
+      <div class="spec-item"><dt>当前版本</dt><dd class="num">0.5.6<small>2026-11-04 发布</small></dd></div>
+      <div class="spec-item"><dt>体积</dt><dd>约 6 MB<small>免安装单文件，双击即用</small></dd></div>
+      <div class="spec-item"><dt>技术栈</dt><dd>Tauri 2 · Rust · React 19<small>TypeScript · SQLite（rusqlite bundled）</small></dd></div>
+      <div class="spec-item"><dt>运行平台</dt><dd>Windows 10 / 11（x64）<small>需要 Microsoft Edge WebView2 运行时</small></dd></div>
+      <div class="spec-item"><dt>许可</dt><dd>木兰宽松许可证 v2<small>源码开放，可自行编译</small></dd></div>
+      <div class="spec-item"><dt>更新方式</dt><dd>应用内原地覆盖<small>设置、记录、快捷方式都不动；自动检查默认关闭</small></dd></div>
+    </dl>
+  </section>
+
+  <!-- P5 · 下载 -->
+  <section class="block wrap" id="download" data-pid="p5-download" aria-labelledby="downloadTitle">
+    <div class="cta">
+      <span class="orb orb-a" aria-hidden="true"></span><span class="orb orb-b" aria-hidden="true"></span>
+      <div class="cta-in">
+        <div class="kicker">下载 · v0.5.6</div>
+        <h2 id="downloadTitle">把时间留在自己手里。</h2>
+        <p>一个安装包，点击即下载。完全免费，不需要注册，也不会问你要邮箱。</p>
+        <div class="cta-actions">
+          <a class="glass-chip" href="https://gitee.com/zzjzgz/time-trace-code/releases/download/TimeTrace_0.5.6/TimeTrace_0.5.6_x64-setup.exe" target="_blank" rel="noopener noreferrer">下载安装向导 · setup.exe
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+          </a>
+        </div>
+        <p class="cta-note">点击即开始下载 v0.5.6 安装包。项目没有代码签名证书，Windows SmartScreen 可能提示「未知发布者」；安装前请先从托盘右键退出正在运行的 TimeTrace。需要免安装单文件或 MSI，请到发布仓的 v0.5.6 目录；历史版本与更新清单也在同一个仓库。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="block wrap" id="faq" aria-labelledby="faqTitle">
+    <div class="block-head">
+      <div class="kicker">常见问题</div>
+      <h2 id="faqTitle">还有几个可能被问到的。</h2>
+    </div>
+    <div class="panel">
+      <div class="faq-item"><h3>需要联网吗？</h3><p>不需要。统计、存储、展示全在本机完成，默认不联网。只有主动点「检查更新」时才会读一次公开清单，且自动检查默认关闭；设置里可以开启「完全离线模式」，彻底关掉这条出站请求。</p></div>
+      <div class="faq-item"><h3>我的数据会被上传吗？</h3><p>不会。没有账号体系，没有遥测，没有云端同步。记录只写本机 SQLite 文件，文件路径可以自己改，也可以随时导出、备份或清除。</p></div>
+      <div class="faq-item"><h3>换电脑或重装怎么办？</h3><p>把数据目录整个复制走即可；设置里也提供导出、备份恢复与整库迁移。应用内更新采用原地覆盖，不会动到设置、记录和快捷方式。</p></div>
+      <div class="faq-item"><h3>支持 macOS 或 Linux 吗？</h3><p>目前只支持 Windows 10 / 11（x64），依赖 WebView2 运行时与 Windows 前台窗口接口。界面本身是 Web 技术，但采集层是 Win32 实现，暂未移植到其他平台。</p></div>
+      <div class="faq-item"><h3>在哪里看源码和更新日志？</h3><p>源码在 <a href="https://gitcode.com/weixin_51713937/TimeTrace" target="_blank" rel="noopener noreferrer">GitCode 仓库</a>，安装包、历史版本与更新清单在 <a href="https://gitee.com/zzjzgz/time-trace-code" target="_blank" rel="noopener noreferrer">Gitee 发布仓</a>。许可为木兰宽松许可证第 2 版。</p></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-in">
+    <div class="foot-meta">© 2026 zzj · TimeTrace · 一刻 · 木兰宽松许可证第 2 版</div>
+    <nav class="foot-links" aria-label="页脚链接">
+      <a href="https://gitcode.com/weixin_51713937/TimeTrace" target="_blank" rel="noopener noreferrer">源码</a>
+      <a href="https://gitee.com/zzjzgz/time-trace-code" target="_blank" rel="noopener noreferrer">发布仓</a>
+      <a href="https://gitee.com/zzjzgz/time-trace-code/raw/master/latest.json" target="_blank" rel="noopener noreferrer">更新清单</a>
+      <a href="#top">回到顶部</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var nav = document.getElementById('siteNav');
+  function onScroll() { nav.classList.toggle('scrolled', window.scrollY > 8); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  var seg = document.getElementById('viewSeg');
+  var stage = document.getElementById('viewStage');
+  var cap = document.getElementById('viewCap');
+  var frames = Array.prototype.slice.call(stage.querySelectorAll('img'));
+  var captions = [
+    '今天：总时长、分类构成、使用最多的应用、系统事件与本周节奏，一屏看完。',
+    '趋势：日 / 周 / 月三套图表，柱子和折线都可以点开看详情。',
+    '应用：按应用排行，点任意一行看它「日 / 周 / 30 天」的时间线。',
+    '事件：完整的系统事件流，按类型区分，时间去了哪里一目了然。'
+  ];
+  function select(index) {
+    seg.setAttribute('data-active', String(index));
+    Array.prototype.forEach.call(seg.querySelectorAll('button'), function (b) {
+      b.setAttribute('aria-selected', String(Number(b.getAttribute('data-view')) === index));
+    });
+    frames.forEach(function (img, i) { img.classList.toggle('is-active', i === index); });
+    cap.textContent = captions[index];
+  }
+  seg.addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-view]');
+    if (b) select(Number(b.getAttribute('data-view')));
+  });
+  seg.addEventListener('keydown', function (e) {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    var current = Number(seg.getAttribute('data-active'));
+    var next = (current + (e.key === 'ArrowRight' ? 1 : 3)) % 4;
+    select(next);
+    seg.querySelectorAll('button[data-view]')[next].focus();
+    e.preventDefault();
+  });
+
+  var images = Array.prototype.slice.call(document.querySelectorAll('img[data-img]'));
+  images.forEach(function (img) {
+    img.addEventListener('error', function () {
+      var host = img.closest('.hero-art, .screen-stage');
+      if (host) host.classList.add('img-error');
+    });
+  });
+})();
+</script>
+</body>
+</html>
