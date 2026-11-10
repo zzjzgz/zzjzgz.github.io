@@ -11,15 +11,15 @@ TimeTrace 是一款**本地优先的 Windows 应用使用时长统计工具**：
 | 官网 | <https://zzjzgz.github.io> |
 | 应用源码 | <https://gitcode.com/weixin_51713937/TimeTrace> |
 | 安装包 / 历史版本 / 更新清单 | <https://gitee.com/zzjzgz/time-trace-code> |
-| v0.5.6 安装向导（直链） | <https://gitee.com/zzjzgz/time-trace-code/releases/download/TimeTrace_0.5.6/TimeTrace_0.5.6_x64-setup.exe> |
-| 当前版本 | 0.5.6（2026-11-04） |
+| v0.6.0 安装向导（直链） | <https://gitee.com/zzjzgz/time-trace-code/raw/master/releases/v0.6.0/TimeTrace_0.6.0_x64-setup.exe> |
+| 当前版本 | 0.6.0（2026-11-10） |
 | 源码许可 | 木兰宽松许可证第 2 版 |
 
 ## 仓库结构
 
 ```
 index.html                  零构建单文件官网，双击可开
-assets/screens/             四张产品界面截图：今天 / 趋势 / 应用 / 事件
+assets/screens/             四张产品界面截图：今天 / 年度趋势 / 应用 / 事件
 assets/friends/             友链 logo（本地化，保证零外链资源）
 screenshots/                官网截图：1366 / 1440 / 1920 三档整页 + 首屏 + 友链特写
 tokens.json                 设计令牌，由 index.html 的 :root 自动抽取
@@ -46,7 +46,7 @@ python -m http.server 8080
 
 ## 截图从哪来
 
-`assets/screens/` 不是历史遗留素材，是从 TimeTrace **v0.5.6 当前源码重新构建后实际运行截取**的：
+`assets/screens/` 不是历史遗留素材，是从 TimeTrace **v0.6.0 当前源码重新构建后实际运行截取**的：
 
 ```bash
 # 在 TimeTrace/app 目录下
@@ -78,4 +78,4 @@ python _workflow/extract_tokens.py      # 从 :root 重生成 tokens.json
 
 ## 维护提示
 
-**版本号、四张产品截图、下载直链是绑定的**：发布新版本时三处必须同步更新，否则页面会「说谎」。顶层 `TimeTrace/README.md` 的下载表目前仍写 0.5.5，本仓库按 0.5.6，建议一并同步。
+**版本号、四张产品截图、下载直链是绑定的**：发布新版本时三处必须同步更新，否则页面会「说谎」。下载直链当前指向 Gitee 发布仓的 raw 文件（`releases/vX.Y.Z/`）；发版后可用 `curl -L` 核对 200 与 SHA256。

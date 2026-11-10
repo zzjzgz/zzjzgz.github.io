@@ -66,6 +66,15 @@ fs.mkdirSync(OUT_DIR, { recursive: true });
     await page.locator(".page").first().waitFor({ state: "visible", timeout: 20000 });
     await page.waitForTimeout(900);
 
+    // 趋势配图展示 0.6.0 的年度热力图页，而不是默认的「日」分时
+    if (id === "trend") {
+      const yearBtn = page.locator('#view-trend .seg button', { hasText: "年" });
+      if ((await yearBtn.count()) === 1) {
+        await yearBtn.click();
+        await page.waitForTimeout(900);
+      }
+    }
+
     // 采集版本证据：状态栏会渲染 v{version}
     const version = await page
       .locator("body")
