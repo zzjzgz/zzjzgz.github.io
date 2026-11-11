@@ -105,7 +105,7 @@
 ## 9. 已知限制
 
 1. **脚本 WARN 项**：`check_design_pack.py --strict` 复跑结果 WARN 0（无原文可抄）；FAIL 0，PASS 见 `_workflow/gate-report.md`。
-2. 顶层 `TimeTrace/README.md` 的下载表仍写 **0.5.5**，与 `latest.json` / `package.json` / `Cargo.toml` 的 **0.6.1** 不一致；本页按后者，建议维护者同步 README。
+2. 顶层 `TimeTrace/README.md` 的下载表已于 2026-11-11 同步到 **0.6.1**（此前仍写 0.5.5）；本页按 `latest.json` / `package.json` / `Cargo.toml` 口径，两者已一致，此限制解除。
 3. 导航按钮视觉高度 40px，低于 44px 建议值；放大到 64px 导航高度即可消除。
 4. 外链（Gitee / GitCode / 更新清单）不可达时页面不做运行时探测与提示，交给浏览器处理。
 5. 界面截图使用内置演示快照，页面已明确标注「不是任何真实用户的记录」；若日后换成真实数据截图，需同步改图注。
