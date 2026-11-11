@@ -11,8 +11,8 @@ TimeTrace 是一款**本地优先的 Windows 应用使用时长统计工具**：
 | 官网 | <https://zzjzgz.github.io> |
 | 应用源码 | <https://gitcode.com/weixin_51713937/TimeTrace> |
 | 安装包 / 历史版本 / 更新清单 | <https://gitee.com/zzjzgz/time-trace-code> |
-| v0.6.0 安装向导（直链） | <https://gitee.com/zzjzgz/time-trace-code/raw/master/releases/v0.6.0/TimeTrace_0.6.0_x64-setup.exe> |
-| 当前版本 | 0.6.0（2026-11-10） |
+| v0.6.1 安装向导（直链） | <https://gitee.com/zzjzgz/time-trace-code/raw/master/releases/v0.6.1/TimeTrace_0.6.1_x64-setup.exe> |
+| 当前版本 | 0.6.1（2026-11-10） |
 | 源码许可 | 木兰宽松许可证第 2 版 |
 
 ## 仓库结构
@@ -46,7 +46,7 @@ python -m http.server 8080
 
 ## 截图从哪来
 
-`assets/screens/` 不是历史遗留素材，是从 TimeTrace **v0.6.0 当前源码重新构建后实际运行截取**的：
+`assets/screens/` 不是历史遗留素材，是从 TimeTrace **v0.6.1 当前源码重新构建后实际运行截取**的：
 
 ```bash
 # 在 TimeTrace/app 目录下
@@ -59,12 +59,13 @@ node _workflow/capture-screens.cjs   # 截四张产品界面图
 node _workflow/capture-page.cjs      # 截官网三档整页图
 ```
 
-画面中的数据为内置演示快照，**不是任何真实用户的记录**。
+画面中的数据为内置演示快照，**不是任何真实用户的记录**。截图取自网页预览：应用图标需要桌面运行时从本机 exe 提取，所以预览里显示的是字块兜底，不是 0.6.1 新功能的实际效果。
 
 ## 验证
 
 ```bash
 python _workflow/reverse_verify.py      # 反向验证：改坏变红 → 字节级恢复变绿
+python _workflow/check_release.py       # 版本、直链、目录、截图来源一致性硬断言
 python _workflow/sync_single_setup.py   # 下载入口硬断言
 python _workflow/sync_friends.py        # 友链位置、banner 入口、logo 本地化硬断言
 python _workflow/extract_tokens.py      # 从 :root 重生成 tokens.json

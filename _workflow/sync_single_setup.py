@@ -10,19 +10,27 @@
 并把全部交接文档的「三种产物 / 三个按钮 / 目录页」口径同步为单 setup 口径。
 用法：python _workflow/sync_single_setup.py（幂等，可复跑）
 """
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+# 仅用于 2026-11-06 那次历史文档口径迁移（REPLACEMENTS 里的旧文案），
+# 不代表当前直链；当前直链由 verify_index() 从 index.html 动态读取。
 URL = "https://gitee.com/zzjzgz/time-trace-code/releases/download/TimeTrace_0.5.6/TimeTrace_0.5.6_x64-setup.exe"
 
 
 def verify_index():
     html = (ROOT / "index.html").read_text(encoding="utf-8")
-    n = html.count(f'href="{URL}"')
-    assert n == 3, f"直链入口数量应为 3，实际 {n}"
+    links = [h for h in re.findall(r'href="([^"]+)"', html) if h.endswith("_x64-setup.exe")]
+    assert len(links) == 3, f"直链入口数量应为 3，实际 {len(links)}"
+    assert len(set(links)) == 1, f"三处直链应一致，实际 {sorted(set(links))}"
+    assert re.fullmatch(
+        r"https://gitee\.com/zzjzgz/time-trace-code/raw/master/releases/v0\.\d+\.\d+/TimeTrace_0\.\d+\.\d+_x64-setup\.exe",
+        links[0],
+    ), f"直链格式异常：{links[0]}"
     assert 'href="#download"' not in html, "仍有入口指向页内锚点而非直接下载"
     assert html.count('class="glass-chip"') == 1, "下载区应只剩 1 个玻璃按钮"
-    return n
+    return len(links)
 
 
 REPLACEMENTS = {
@@ -102,6 +110,7 @@ n_links = verify_index()
 print(f"index.html 硬断言 PASS：直链入口 {n_links} 处、无 #download 残留、下载区 1 个按钮")
 
 total = 0
+skipped = 0
 for rel, pairs in REPLACEMENTS.items():
     path = ROOT / rel
     text = path.read_text(encoding="utf-8")
@@ -110,11 +119,17 @@ for rel, pairs in REPLACEMENTS.items():
         if new in text:
             continue
         count = text.count(old)
+        if count == 0:
+            # 该文档已由后续发版改写（例如 HANDOFF 的可核对事实表），
+            # 历史口径片段不再存在，视为已同步，不再报错也不重写文件。
+            skipped += 1
+            continue
         if count != 1:
             raise SystemExit(f"断言失败：{rel} 中该片段命中 {count} 次（应为 1）：{old[:60]}")
         text = text.replace(old, new, 1)
         applied += 1
         total += 1
-    path.write_text(text, encoding="utf-8")
+    if applied:
+        path.write_text(text, encoding="utf-8")
     print(f"  {rel}: 本次同步 {applied}/{len(pairs)} 处")
-print(f"共同步 {total} 处，覆盖 {len(REPLACEMENTS)} 个文档")
+print(f"共同步 {total} 处、跳过已改写片段 {skipped} 处，覆盖 {len(REPLACEMENTS)} 个文档")
