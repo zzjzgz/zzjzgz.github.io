@@ -84,13 +84,13 @@
 
 | 字段 | 值 | 来源 |
 |---|---|---|
-| 版本 | 0.6.1 | `app/package.json`、`src-tauri/Cargo.toml`、`tauri.conf.json`、`latest.json`、CHANGELOG |
-| 发布日期 | 2026-11-10 | CHANGELOG / 发布仓 `latest.json` |
+| 版本 | 0.6.3 | `app/package.json`、`src-tauri/Cargo.toml`、`tauri.conf.json`、`latest.json`、CHANGELOG |
+| 发布日期 | 2026-11-12 | CHANGELOG / 发布仓 `latest.json` |
 | 技术栈 | Tauri 2 · Rust · React 19 · TypeScript · SQLite | `TimeTrace/README.md` |
 | 四视图 | 今天 / 趋势 / 应用 / 事件 | `app/src/components/ChapterNav.tsx` |
 | 记录边界 | README「它记录什么」表 | `TimeTrace/README.md` |
-| 安装包直链 | Gitee `releases/v0.6.1/TimeTrace_0.6.1_x64-setup.exe`（raw） | 实查 200、3,131,304 字节；SHA256 与 `latest.json` 一致 |
-| 其他产物 | Gitee `releases/v0.6.1` 目录 | 仅在 CTA 提示文案中给出目录页；不设按钮 |
+| 安装包直链 | Gitee `releases/v0.6.3/TimeTrace_0.6.3_x64-setup.exe`（raw） | 实查 200、3,132,283 字节；SHA256 与 `latest.json` 一致 |
+| 其他产物 | Gitee `releases/v0.6.3` 目录 | 仅在 CTA 提示文案中给出目录页；不设按钮 |
 | 许可 | 木兰宽松许可证 v2 | `LICENSE` |
 | 友链 | 屿见官网 · `https://yujian.cystation.site` · 以优越的技术为大家提供更优渥的平台 | 用户提供，地址实查 200 |
 
@@ -105,7 +105,7 @@
 ## 9. 已知限制
 
 1. **脚本 WARN 项**：`check_design_pack.py --strict` 复跑结果 WARN 0（无原文可抄）；FAIL 0，PASS 见 `_workflow/gate-report.md`。
-2. 顶层 `TimeTrace/README.md` 的下载表已于 2026-11-11 同步到 **0.6.1**（此前仍写 0.5.5）；本页按 `latest.json` / `package.json` / `Cargo.toml` 口径，两者已一致，此限制解除。
+2. 顶层 `TimeTrace/README.md` 的下载表随每次发版同步（最近一次 2026-11-12 到 **0.6.3**）；本页按 `latest.json` / `package.json` / `Cargo.toml` 口径，两者已一致。
 3. 导航按钮视觉高度 40px，低于 44px 建议值；放大到 64px 导航高度即可消除。
 4. 外链（Gitee / GitCode / 更新清单）不可达时页面不做运行时探测与提示，交给浏览器处理。
 5. 界面截图使用内置演示快照，页面已明确标注「不是任何真实用户的记录」；若日后换成真实数据截图，需同步改图注。
