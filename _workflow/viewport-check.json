@@ -1,11 +1,11 @@
 {
-  "capturedAt": "2026-11-12T06:56:13.655Z",
+  "capturedAt": "2026-11-13T07:00:46.633Z",
   "browser": "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
   "report": [
     {
       "viewport": "1366x768",
       "file": "1366x768.png",
-      "bytes": 1023552,
+      "bytes": 1022164,
       "overflow": {
         "scrollWidth": 1366,
         "innerWidth": 1366,
@@ -23,7 +23,7 @@
     {
       "viewport": "1440x900",
       "file": "1440x900.png",
-      "bytes": 1028926,
+      "bytes": 1028083,
       "overflow": {
         "scrollWidth": 1440,
         "innerWidth": 1440,
@@ -41,7 +41,7 @@
     {
       "viewport": "1920x1080",
       "file": "1920x1080.png",
-      "bytes": 1055221,
+      "bytes": 1053820,
       "overflow": {
         "scrollWidth": 1920,
         "innerWidth": 1920,
