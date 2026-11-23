@@ -84,13 +84,13 @@
 
 | 字段 | 值 | 来源 |
 |---|---|---|
-| 版本 | 0.8.2 | `app/package.json`、`src-tauri/Cargo.toml`、`tauri.conf.json`、`latest.json`、CHANGELOG |
-| 发布日期 | 2026-11-23 | CHANGELOG / 发布仓 `latest.json` |
+| 版本 | 0.8.4 | `app/package.json`、`src-tauri/Cargo.toml`、`tauri.conf.json`、`latest.json`、CHANGELOG |
+| 发布日期 | 2026-11-24 | CHANGELOG / 发布仓 `latest.json` |
 | 技术栈 | Tauri 2 · Rust · React 19 · TypeScript · SQLite | `TimeTrace/README.md` |
 | 四视图 | 今天 / 趋势 / 应用 / 事件 | `app/src/components/ChapterNav.tsx` |
 | 记录边界 | README「它记录什么」表 | `TimeTrace/README.md` |
-| 安装包直链 | Gitee `releases/v0.8.2/TimeTrace_0.8.2_x64-setup.exe`（raw） | 实查直链可达、3,174,213 字节；SHA256 与 `latest.json` 一致 |
-| 其他产物 | Gitee `releases/v0.8.2` 目录 | 仅在 CTA 提示文案中给出目录页；不设按钮 |
+| 安装包直链 | Gitee `releases/v0.8.4/TimeTrace_0.8.4_x64-setup.exe`（raw） | 实查直链可达、3,188,642 字节；SHA256 与 `latest.json` 一致 |
+| 其他产物 | Gitee `releases/v0.8.4` 目录 | 仅在 CTA 提示文案中给出目录页；不设按钮 |
 | 许可 | 木兰宽松许可证 v2 | `LICENSE` |
 | 友链 | 屿见官网 · `https://yujian.cystation.site` · 以优越的技术为大家提供更优渥的平台 | 用户提供，地址实查 200 |
 
@@ -105,7 +105,7 @@
 ## 9. 已知限制
 
 1. **脚本 WARN 项**：`check_design_pack.py --strict` 复跑结果 WARN 0（无原文可抄）；FAIL 0，PASS 见 `_workflow/gate-report.md`。
-2. 顶层 `TimeTrace/README.md` 的下载表随每次发版同步（最近一次 2026-11-23 到 **0.8.2**）；本页按 `latest.json` / `package.json` / `Cargo.toml` 口径，两者已一致。
+2. 顶层 `TimeTrace/README.md` 的下载表随每次发版同步（最近一次 2026-11-24 到 **0.8.4**）；本页按 `latest.json` / `package.json` / `Cargo.toml` 口径，两者已一致。
 3. 导航按钮视觉高度 40px，低于 44px 建议值；放大到 64px 导航高度即可消除。
 4. 外链（Gitee / GitCode / 更新清单）不可达时页面不做运行时探测与提示，交给浏览器处理。
 5. 界面截图使用内置演示快照，页面已明确标注「不是任何真实用户的记录」；若日后换成真实数据截图，需同步改图注。
@@ -113,8 +113,8 @@
 7. 未添加 `.nojekyll`：站点依赖 Jekyll 对 `assets/`、`screenshots/` 的正常复制行为；若日后引入下划线命名的资源目录，需补 `.nojekyll`。
 8. 首次交付于 2026-11-06 16:27 提交 `7af70e7` 并推送；16:58 追加的友情链接区段、banner「友链」导航与 README 已随本次提交一并推送。线上 `https://zzjzgz.github.io` 已验证 200，四张产品图、友链 logo 与下载直链均可达。后续改动仍需用户明确授权。
 9. 未验证浏览器：旧版 Safari / IE；目标为 Chromium 与 WebKit 现代版本。
-10. 仅安装向导有发行版直链（302 已核实）；免安装单文件与 MSI 的同模式直链实查 404，故这两个按钮指向 `releases/v0.5.6` 目录页。
-10. 下载区只保留一个 setup 按钮；免安装单文件与 MSI 的同模式直链实查 404，故不设按钮，仅在提示文案中给出 `releases/v0.5.6` 目录。顶部导航与首屏两处入口与 CTA 同链，点击即下载，不再经过页内锚点。
+10. 仅安装向导有发行版直链（302 已核实）；免安装单文件与 MSI 的同模式直链实查 404，故这两个按钮指向 `releases` 目录页。
+10. 下载区只保留一个 setup 按钮；免安装单文件与 MSI 的同模式直链实查 404，故不设按钮，仅在提示文案中给出 `releases` 目录。顶部导航与首屏两处入口与 CTA 同链，点击即下载，不再经过页内锚点。
 
 ## 10. 验收清单
 
