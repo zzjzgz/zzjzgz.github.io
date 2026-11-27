@@ -3,538 +3,740 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="TimeTrace · 一刻 —— 本地优先的 Windows 应用使用时长统计工具。记录只写本机 SQLite，无账号、无遥测、完全免费。">
-<meta name="theme-color" content="#f5f5f7">
+<meta name="description" content="TimeTrace · 一刻 —— 本地优先的 Windows 应用使用时长统计工具。记录只写本机，无账号、无遥测、完全免费。">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" href="data:,">
-<title>TimeTrace · 一刻 — 把电脑时间，记清楚</title>
+<title>TimeTrace · 一刻</title>
 <style>
+@font-face{
+  font-family:Geist;
+  src:url("assets/geist-latin.woff2") format("woff2");
+  font-weight:400 700;
+  font-style:normal;
+  font-display:swap;
+}
 :root{
-  --bg:#f5f5f7; --surface:#ffffff; --hover:#fbfbfd;
-  --text:#1d1d1f; --text-body:#424245; --text-2:#6e6e73; --text-3:#6e6e73; --text-4:#86868b;
-  --faint:#d2d2d7; --hairline:rgba(0,0,0,0.07); --track:#e8e8ed;
-  --accent:#0071e3; --accent-link:#0066cc; --indigo:#5e5ce6; --live:#30d158;
-  --heat:#ff6b00; --heat-bg:rgba(255,107,0,0.1); --on-accent:#ffffff;
-  --grad-cta:linear-gradient(135deg,#0071e3 0%,#5e5ce6 100%);
-  --font:-apple-system,BlinkMacSystemFont,'SF Pro Text','SF Pro Display','Helvetica Neue','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
-  --mono:ui-monospace,'SF Mono',Menlo,Consolas,monospace;
-  --r-pill:999px; --r-chip:6px; --r-thumb:12px; --r-card:18px; --r-panel:22px; --r-hero:26px; --r-sheet:16px;
-  --sh-card:0 1px 2px rgba(0,0,0,0.04),0 8px 24px rgba(0,0,0,0.05);
-  --sh-panel:0 1px 3px rgba(0,0,0,0.05),0 14px 40px rgba(0,0,0,0.05);
-  --sh-lift:0 12px 32px rgba(0,0,0,0.1);
-  --sh-cta:0 20px 54px rgba(0,113,227,0.24);
-  --sh-overlay:0 2px 8px rgba(0,0,0,0.10),0 30px 80px rgba(0,0,0,0.24);
-  --max-read:720px; --max-grid:1080px; --pad-x:22px; --gap-section:clamp(48px,7vw,88px);
-  --dur-1:120ms; --dur-2:180ms; --dur-3:280ms; --dur-4:420ms;
-  --ease-out:cubic-bezier(0.23,1,0.32,1);
-  --ease-in-out:cubic-bezier(0.77,0,0.175,1);
-  --ease-spring:cubic-bezier(0.32,0.72,0,1);
-  --ease-out-quart:cubic-bezier(0.25,1,0.5,1);
-  --ease-soft:ease;
+  --ink:#181818;
+  --muted:#6A6A6A;
+  --line:rgba(0,0,0,.10);
+  --line-strong:rgba(0,0,0,.18);
+  --accent:#0A66C2;
+  --bg:#ffffff;
+  --surface:#fafafa;
+  --font:Geist,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  --mono:Geist,ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --r-sm:8px;
+  --r-pill:24px;
+  --r-lg:32px;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --max:1080px;
+  --pad:24px;
 }
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-  margin:0;background:var(--bg);color:var(--text);font-family:var(--font);
-  font-optical-sizing:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
-  line-height:1.6;overflow-x:hidden;
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font);
+  font-size:16px;
+  font-weight:400;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
 }
 img{max-width:100%;display:block}
-a{color:var(--accent-link);text-decoration:none}
-a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:var(--r-chip)}
-button{font-family:inherit}
+a{color:var(--accent);text-decoration:none}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:var(--r-sm)}
 h1,h2,h3,p,figure{margin:0}
-.wrap{max-width:var(--max-grid);margin:0 auto;padding:0 var(--pad-x)}
-.narrow{max-width:var(--max-read);margin:0 auto;padding:0 var(--pad-x)}
-section{scroll-margin-top:80px}
-.num{font-variant-numeric:tabular-nums}
 .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--pad)}
 
-/* ---------- sticky glass nav ---------- */
-.nav{position:sticky;top:0;z-index:50;background:rgba(245,245,247,0.72);
-  backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
-  border-bottom:1px solid transparent;transition:border-color var(--dur-3) var(--ease-out),box-shadow var(--dur-3) var(--ease-out)}
-.nav.scrolled{border-bottom-color:var(--hairline);box-shadow:0 1px 12px rgba(0,0,0,0.04)}
-.nav-in{max-width:var(--max-grid);margin:0 auto;padding:0 var(--pad-x);height:60px;
-  display:flex;align-items:center;justify-content:space-between;gap:20px}
-.brand{display:inline-flex;align-items:center;gap:9px;color:var(--text);font-size:15px;font-weight:600;letter-spacing:-0.01em;white-space:nowrap}
-.brand svg{width:21px;height:21px;flex:none;color:var(--text)}
-.brand .cn{font-weight:400;color:var(--text-2);font-size:13px}
-.nav-links{display:flex;align-items:center;gap:26px;flex:1;justify-content:center}
-.nav-links a{font-size:13px;color:var(--text-2);transition:color var(--dur-1) var(--ease-out)}
-.nav-links a:hover{color:var(--text)}
-
-/* ---------- buttons ---------- */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;
-  padding:0 22px;border-radius:var(--r-pill);font-size:14px;font-weight:600;white-space:nowrap;
-  transition:transform var(--dur-1) var(--ease-out),background-color var(--dur-1) var(--ease-out),box-shadow var(--dur-2) var(--ease-out)}
-.btn:active{transform:scale(0.97)}
-.btn-primary{background:var(--accent);color:var(--on-accent);box-shadow:0 1px 2px rgba(0,0,0,0.06)}
-.btn-primary:hover{background:var(--accent-link)}
-.btn-quiet{background:var(--surface);color:var(--text);border:1px solid var(--hairline);box-shadow:0 1px 2px rgba(0,0,0,0.04)}
-.btn-quiet:hover{background:var(--hover)}
-.btn svg{width:15px;height:15px;flex:none}
-.nav .btn{min-height:40px;padding:0 18px;font-size:13px}
-
-/* ---------- hero ---------- */
-.hero{padding:clamp(56px,9vw,104px) 0 0;text-align:center}
-.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:600;
-  letter-spacing:0.14em;color:var(--text-2)}
-.eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--live);flex:none}
-h1{margin-top:20px;font-size:clamp(32px,5vw,56px);font-weight:700;letter-spacing:-0.045em;line-height:1.12;text-wrap:balance}
-.lede{max-width:640px;margin:22px auto 0;font-size:clamp(16px,2.3vw,19px);color:var(--text-body);line-height:1.75}
-.lede strong{font-weight:600;color:var(--text)}
-.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:30px}
-.hero-meta{margin-top:22px;font-size:13px;color:var(--text-3);line-height:1.9}
-.hero-meta .sep{color:var(--faint);margin:0 8px}
-.hero-art{position:relative;margin:clamp(40px,6vw,68px) auto 0;width:calc(100% - 2 * var(--pad-x));max-width:1080px;
-  border-radius:var(--r-hero);overflow:hidden;background:var(--surface);box-shadow:var(--sh-panel);
-  transition:transform var(--dur-2) var(--ease-out),box-shadow var(--dur-2) var(--ease-out)}
-.hero-art img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top center}
-.source-badge{position:absolute;left:18px;bottom:18px;display:inline-flex;align-items:center;gap:8px;
-  padding:9px 15px;border-radius:var(--r-pill);font-size:12px;font-weight:550;letter-spacing:0.01em;
-  color:var(--on-accent);background:rgba(29,29,31,0.62);border:1px solid rgba(255,255,255,0.18);
-  backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px)}
-.source-badge .mark{width:6px;height:6px;border-radius:50%;background:var(--live);flex:none}
-@media (hover:hover) and (pointer:fine){.hero-art:hover{transform:translateY(-3px);box-shadow:var(--sh-lift)}}
-
-/* ---------- section headings ---------- */
-.block{padding-top:var(--gap-section)}
-.block-head{max-width:720px;margin:0 auto clamp(28px,4vw,44px);text-align:center}
-.block-head .kicker{font-size:12px;font-weight:600;letter-spacing:0.14em;color:var(--text-3)}
-.block-head h2{margin-top:14px;font-size:clamp(26px,4vw,42px);font-weight:700;letter-spacing:-0.032em;line-height:1.18}
-.block-head p{margin-top:14px;font-size:clamp(15px,2vw,17px);color:var(--text-2);line-height:1.75}
-
-/* ---------- unified panel (anti-fragmentation) ---------- */
-.panel{background:var(--surface);border-radius:var(--r-panel);box-shadow:var(--sh-panel);overflow:hidden}
-.row{padding:clamp(20px,2.6vw,28px) clamp(22px,3vw,34px)}
-.row + .row{border-top:1px solid var(--hairline)}
-.row-grid{display:grid;grid-template-columns:72px 1fr;gap:clamp(12px,2vw,24px);align-items:start}
-.row-n{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--faint);padding-top:5px;letter-spacing:0.04em}
-.row h3{font-size:clamp(17px,2vw,20px);font-weight:600;letter-spacing:-0.015em;line-height:1.4}
-.row p{margin-top:8px;font-size:14.5px;color:var(--text-2);line-height:1.8;max-width:720px}
-.row .detail{margin-top:10px;font-size:13px;color:var(--text-3);line-height:1.8}
-.prose{font-size:16px;line-height:1.85;color:var(--text-body)}
-
-/* ---------- views switcher ---------- */
-.seg{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:0;
-  width:min(100%,440px);margin:0 auto clamp(24px,3vw,32px);padding:4px;
-  background:var(--track);border-radius:var(--r-pill)}
-.seg-thumb{position:absolute;top:4px;bottom:4px;left:4px;width:calc((100% - 8px)/4);
-  border-radius:var(--r-pill);background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,0.12);
-  transition:transform var(--dur-2) var(--ease-out-quart);pointer-events:none}
-.seg[data-active="1"] .seg-thumb{transform:translateX(100%)}
-.seg[data-active="2"] .seg-thumb{transform:translateX(200%)}
-.seg[data-active="3"] .seg-thumb{transform:translateX(300%)}
-.seg button{position:relative;z-index:1;height:44px;border:0;background:transparent;cursor:pointer;
-  border-radius:var(--r-pill);font-size:14px;font-weight:500;color:var(--text-2);
-  transition:color var(--dur-2) var(--ease-out-quart);-webkit-tap-highlight-color:transparent}
-.seg button[aria-selected="true"]{color:var(--text);font-weight:600}
-.screen-stage{position:relative;width:100%;aspect-ratio:16/10;border-radius:var(--r-card);
-  overflow:hidden;background:var(--surface);box-shadow:var(--sh-panel)}
-.screen-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;
-  opacity:0;transform:translateY(8px);
-  transition:opacity var(--dur-3) var(--ease-out),transform var(--dur-3) var(--ease-out)}
-.screen-stage img.is-active{opacity:1;transform:none}
-.img-fallback{display:none;position:absolute;inset:0;align-items:center;justify-content:center;flex-direction:column;gap:12px;
-  text-align:center;padding:30px;font-size:14px;color:var(--text-2);line-height:1.8;background:var(--surface)}
-.screen-stage.img-error .img-fallback,.hero-art.img-error .img-fallback{display:flex}
-.screen-cap{margin-top:18px;text-align:center;font-size:14px;color:var(--text-2);line-height:1.8;min-height:50px}
-.screen-note{margin-top:10px;text-align:center;font-size:12.5px;color:var(--text-3);line-height:1.8}
-
-/* ---------- privacy two columns ---------- */
-.split{display:grid;grid-template-columns:1fr 1fr}
-.split > div{padding:clamp(24px,3vw,34px)}
-.split > div + div{border-left:1px solid var(--hairline)}
-.split h3{font-size:16px;font-weight:600;letter-spacing:-0.01em}
-.split .tag{display:inline-block;margin-bottom:14px;font-size:11.5px;font-weight:600;letter-spacing:0.06em;
-  padding:4px 11px;border-radius:var(--r-pill);color:var(--text-2);background:rgba(0,0,0,0.045)}
-.split ul{list-style:none;margin:18px 0 0;padding:0}
-.split li{position:relative;padding:9px 0 9px 20px;font-size:14px;color:var(--text-body);line-height:1.7}
-.split li + li{border-top:1px solid var(--hairline)}
-.split li::before{content:"";position:absolute;left:2px;top:18px;width:5px;height:5px;border-radius:50%;background:var(--faint)}
-.split .no li::before{background:var(--live)}
-.split-foot{padding:18px clamp(24px,3vw,34px);border-top:1px solid var(--hairline);
-  font-size:13.5px;color:var(--text-2);line-height:1.8;background:var(--hover)}
-
-/* ---------- spec grid ---------- */
-.spec-grid{display:grid;grid-template-columns:repeat(2,1fr)}
-.spec-item{padding:22px clamp(22px,3vw,32px)}
-.spec-item:nth-child(odd){border-right:1px solid var(--hairline)}
-.spec-item:nth-child(n+3){border-top:1px solid var(--hairline)}
-.spec-item dt{font-size:12px;font-weight:600;letter-spacing:0.08em;color:var(--text-3)}
-.spec-item dd{margin:8px 0 0;font-size:15px;color:var(--text);line-height:1.7;font-weight:500}
-.spec-item dd small{display:block;margin-top:5px;font-size:13px;font-weight:400;color:var(--text-2);line-height:1.7}
-
-/* ---------- CTA ---------- */
-.cta{position:relative;overflow:hidden;border-radius:var(--r-hero);padding:clamp(32px,5vw,56px);
-  background:var(--grad-cta);box-shadow:var(--sh-cta);color:var(--on-accent)}
-.cta .orb{position:absolute;border-radius:50%;pointer-events:none}
-.cta .orb-a{width:280px;height:280px;top:-110px;right:-50px;background:rgba(255,255,255,0.18);filter:blur(46px)}
-.cta .orb-b{width:220px;height:220px;bottom:-100px;left:10%;background:rgba(120,80,255,0.5);filter:blur(50px)}
-.cta-in{position:relative}
-.cta .kicker{font-size:12px;font-weight:600;letter-spacing:0.14em;color:rgba(255,255,255,0.8)}
-.cta h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-0.032em;line-height:1.2}
-.cta p{margin-top:14px;font-size:15px;color:rgba(255,255,255,0.86);line-height:1.8;max-width:600px}
-.cta-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
-.glass-chip{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;
-  border-radius:var(--r-pill);font-size:13.5px;font-weight:600;color:var(--on-accent);
-  background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.22);
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-  transition:transform var(--dur-1) var(--ease-out),background-color var(--dur-1) var(--ease-out)}
-.glass-chip:active{transform:scale(0.97)}
-.glass-chip:hover{background:rgba(255,255,255,0.24)}
-.glass-chip svg{width:14px;height:14px}
-.cta-note{margin-top:22px;font-size:12.5px;color:rgba(255,255,255,0.78);line-height:1.8;max-width:680px}
-
-/* ---------- faq ---------- */
-.faq-item{padding:22px clamp(22px,3vw,32px)}
-.faq-item + .faq-item{border-top:1px solid var(--hairline)}
-.faq-item h3{font-size:16px;font-weight:600;letter-spacing:-0.01em}
-.faq-item p{margin-top:8px;font-size:14px;color:var(--text-2);line-height:1.85;max-width:820px}
-.faq-item a{font-weight:550}
-
-/* ---------- friends ---------- */
-.friend-label{margin:0 0 14px;font-size:12px;font-weight:600;letter-spacing:0.14em;color:var(--text-3)}
-.friend-row{display:flex;align-items:center;gap:16px;padding:20px clamp(22px,3vw,32px);
-  color:var(--text);text-decoration:none;
-  transition:background-color var(--dur-1) var(--ease-out)}
-.friend-row:hover{background:var(--hover)}
-.friend-row:active{background:var(--track)}
-.friend-row img{width:44px;height:44px;border-radius:var(--r-thumb);flex:none}
-.friend-text{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1}
-.friend-text strong{font-size:16px;font-weight:600;letter-spacing:-0.01em}
-.friend-text span{font-size:13.5px;color:var(--text-2);line-height:1.6}
-.friend-row svg{width:16px;height:16px;color:var(--text-3);flex:none;
-  transition:transform var(--dur-2) var(--ease-out-quart)}
-@media (hover:hover) and (pointer:fine){
-  .friend-row:hover svg{transform:translate(2px,-2px)}
+/* 报头行：发丝线 + 三项小字 */
+.masthead{border-bottom:1px solid var(--line)}
+.masthead-in{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  min-height:72px;
+  flex-wrap:wrap;
+}
+.brand{
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  font-size:16px;
+  font-weight:700;
+  letter-spacing:-.01em;
+  color:var(--ink);
+}
+.brand svg{width:24px;height:24px;flex:none;color:var(--ink)}
+.brand .cn{font-weight:400;color:var(--muted)}
+.masthead-meta{
+  display:flex;
+  align-items:center;
+  gap:32px;
+  font-size:12px;
+  font-weight:500;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--muted);
 }
 
-/* ---------- footer ---------- */
-footer{margin-top:var(--gap-section);border-top:1px solid var(--hairline);padding:34px 0 48px}
-.foot-in{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
-.foot-links{display:flex;gap:22px;flex-wrap:wrap}
-.foot-links a{font-size:13px;color:var(--text-2);transition:color var(--dur-1) var(--ease-out)}
-.foot-links a:hover{color:var(--accent-link)}
-.foot-meta{font-size:12.5px;color:var(--text-3);line-height:1.8}
+/* 主张区 */
+.hero{padding:clamp(96px,12vw,160px) 0 clamp(72px,9vw,112px)}
+.hero h1{
+  max-width:880px;
+  font-size:clamp(44px,7vw,76px);
+  font-weight:700;
+  letter-spacing:-.045em;
+  line-height:1.08;
+}
+.deck{
+  max-width:640px;
+  margin-top:32px;
+  font-size:clamp(18px,2.2vw,22px);
+  font-weight:400;
+  line-height:1.7;
+  color:var(--muted);
+}
+.actions{
+  display:flex;
+  align-items:center;
+  gap:24px;
+  flex-wrap:wrap;
+  margin-top:48px;
+}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  min-height:52px;
+  padding:12px 28px;
+  border-radius:var(--r-sm);
+  font-size:16px;
+  font-weight:600;
+  white-space:nowrap;
+}
+.btn svg{width:24px;height:24px;flex:none}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-quiet{border:1px solid var(--line-strong);color:var(--ink);background:transparent}
+.link-quiet{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  min-height:44px;
+  font-size:16px;
+  font-weight:500;
+}
+.link-quiet svg{width:24px;height:24px;flex:none;color:var(--muted)}
+.note{margin-top:24px;font-size:14px;color:var(--muted)}
 
-/* ---------- responsive ---------- */
+/* 三栏 standfirst：发丝线 + 列间竖线 */
+.standfirst{border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.standfirst-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+}
+.standfirst-item{
+  padding:48px 40px;
+  min-width:0;
+}
+.standfirst-item + .standfirst-item{border-left:1px solid var(--line)}
+.standfirst-item:first-child{padding-left:0}
+.standfirst-item:last-child{padding-right:0}
+.standfirst-num{
+  font-size:12px;
+  font-weight:500;
+  letter-spacing:.12em;
+  color:var(--muted);
+}
+.standfirst-item h2{
+  margin-top:20px;
+  font-size:18px;
+  font-weight:700;
+  letter-spacing:-.01em;
+}
+.standfirst-item p{
+  margin-top:12px;
+  font-size:14px;
+  font-weight:400;
+  line-height:1.8;
+  color:var(--muted);
+}
+
+/* 轮播区（视图 / 主题共用外壳） */
+.carousel-section{padding:clamp(96px,12vw,160px) 0 0}
+.carousel-section + .carousel-section{padding-top:clamp(72px,9vw,112px)}
+.carousel-section:last-of-type{padding-bottom:0}
+.carousel-head{margin-bottom:40px}
+.carousel-head h2{
+  font-size:clamp(28px,4vw,40px);
+  font-weight:700;
+  letter-spacing:-.03em;
+}
+.carousel-head p{margin-top:16px;font-size:16px;line-height:1.8;color:var(--muted)}
+.carousel-stage{position:relative;max-width:720px;margin:0 auto}
+.carousel-arrow{
+  position:absolute;
+  top:calc(50% - 22px);
+  z-index:5;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:44px;
+  height:44px;
+  padding:0;
+  border:1px solid var(--line-strong);
+  border-radius:var(--r-pill);
+  background:var(--bg);
+  color:var(--ink);
+  cursor:pointer;
+  opacity:.35;
+  transition:opacity .18s var(--ease);
+}
+.carousel-arrow[data-dir="-1"]{left:-68px}
+.carousel-arrow[data-dir="1"]{right:-68px}
+@media (max-width:1239px){
+  .carousel-arrow{display:none}
+}
+@media (hover:hover) and (pointer:fine){
+  .carousel-stage:hover .carousel-arrow,
+  .carousel-arrow:focus-visible{opacity:1}
+}
+.carousel-arrow svg{width:24px;height:24px;display:block}
+.carousel-arrow[disabled]{opacity:.3;pointer-events:none}
+.carousel-window{position:relative;overflow:hidden;border-radius:var(--r-lg)}
+.carousel-slide{position:relative;aspect-ratio:1080/792}
+.carousel-slide img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border:1px solid var(--line);
+  border-radius:var(--r-lg);
+  background:var(--surface);
+}
+.carousel-slide.is-stack img{transition:none}
+.carousel-name{
+  margin-bottom:16px;
+  text-align:center;
+  font-size:18px;
+  font-weight:600;
+  color:var(--ink);
+}
+.dots{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:32px;
+}
+.dot{
+  width:24px;
+  height:24px;
+  padding:0;
+  border:0;
+  background:transparent;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+}
+.dot::after{
+  content:"";
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--line-strong);
+  transition:background-color .18s var(--ease);
+}
+.dot[aria-current="true"]::after{background:var(--accent)}
+
+/* #137 Push：两图粘连整帧位移，1.15s cubic ease-in-out，6px 接缝线 */
+.push-frame img{
+  transition:transform 1.15s cubic-bezier(.65,0,.35,1);
+  will-change:transform;
+}
+.push-frame .push-next{transform:translateX(100%)}
+.push-frame.moving .push-current{transform:translateX(-100%)}
+.push-frame.moving .push-next{transform:translateX(0)}
+.push-seam{
+  position:absolute;
+  top:0;
+  left:0;
+  width:6px;
+  height:100%;
+  background:var(--accent);
+  opacity:0;
+  pointer-events:none;
+  z-index:4;
+}
+.push-frame.moving .push-seam{
+  opacity:1;
+  transition:transform 1.15s cubic-bezier(.65,0,.35,1);
+  transform:translateX(var(--frame-w,0px));
+}
+
+/* #045 Wipe：两图静止，垂直边界裁剪揭示，1.1s cubic-bezier(.65,0,.35,1)，4px 边界线 */
+.wipe-frame .wipe-base{transition:none}
+.wipe-frame .wipe-top{
+  clip-path:inset(0 100% 0 0);
+  transition:clip-path 1.1s cubic-bezier(.65,0,.35,1);
+  will-change:clip-path;
+}
+.wipe-frame.moving .wipe-top{clip-path:inset(0 0 0 0)}
+.wipe-edge{
+  position:absolute;
+  top:0;
+  left:0;
+  width:4px;
+  height:100%;
+  background:var(--accent);
+  opacity:0;
+  z-index:4;
+  pointer-events:none;
+}
+.wipe-frame.moving .wipe-edge{
+  opacity:1;
+  transition:transform 1.1s cubic-bezier(.65,0,.35,1);
+  transform:translateX(var(--frame-w,0px));
+}
+
+/* 事实区：发丝行分隔，不用卡片 */
+.facts{padding-bottom:clamp(96px,12vw,160px)}
+.fact-row{
+  display:grid;
+  grid-template-columns:200px minmax(0,1fr);
+  gap:32px;
+  padding:28px 0;
+  border-top:1px solid var(--line);
+}
+.fact-row:last-child{border-bottom:1px solid var(--line)}
+.fact-key{font-size:14px;font-weight:600;color:var(--ink)}
+.fact-val{font-size:16px;font-weight:400;line-height:1.7;color:var(--muted)}
+.fact-val a{font-weight:500}
+
+/* 收尾下载区 */
+.closing{border-top:1px solid var(--line);padding:clamp(80px,10vw,128px) 0}
+.closing h2{
+  font-size:clamp(28px,4vw,40px);
+  font-weight:700;
+  letter-spacing:-.03em;
+}
+.closing .actions{margin-top:40px}
+
+/* 页脚 */
+.footer{border-top:1px solid var(--line);padding:32px 0 48px}
+.footer-in{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  flex-wrap:wrap;
+  font-size:14px;
+  color:var(--muted);
+}
+.footer-in a{font-weight:500}
+
+/* 唯一动效：standfirst 滚动入场 */
+.stagger-item{
+  opacity:0;
+  transform:translateY(14px);
+  transition:opacity .45s var(--ease),transform .45s var(--ease);
+}
+.stagger-item.in{opacity:1;transform:translateY(0)}
+
 @media (max-width:900px){
-  .nav-links{gap:16px}
-  .nav-links a{font-size:12.5px}
+  .showcase-grid{grid-template-columns:1fr;gap:48px}
+  .masthead-meta{gap:20px}
 }
 @media (max-width:680px){
-  .nav-links{display:none}
-  .nav-in{gap:12px}
-  .row-grid{grid-template-columns:1fr;gap:6px}
-  .row-n{padding-top:0}
-  .split,.spec-grid{grid-template-columns:1fr}
-  .split > div + div{border-left:0;border-top:1px solid var(--hairline)}
-  .spec-item:nth-child(odd){border-right:0}
-  .spec-item + .spec-item{border-top:1px solid var(--hairline)}
-  .hero-meta .sep{display:block;height:0;overflow:hidden}
-  .source-badge{left:12px;bottom:12px;font-size:11px;padding:7px 12px}
-  .cta-actions{flex-direction:column;align-items:stretch}
-  .seg button{font-size:13px}
+  :root{--pad:20px}
+  .theme-arrow{display:none}
+  .standfirst-grid{grid-template-columns:1fr}
+  .standfirst-item{padding:32px 0}
+  .standfirst-item + .standfirst-item{border-left:0;border-top:1px solid var(--line)}
+  .fact-row{grid-template-columns:1fr;gap:8px}
+  .masthead-in{min-height:96px;align-content:center}
+  .masthead-meta{width:100%;justify-content:space-between;gap:12px;font-size:11px}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .hero-art:hover,.lift:hover{transform:none}
-  .btn:active,.glass-chip:active{transform:none}
-  .screen-stage img{transform:none;transition:opacity var(--dur-2) var(--ease-soft)}
-  .seg-thumb{transition:transform var(--dur-1) var(--ease-soft)}
-  .friend-row svg{transition:none}
-  .friend-row:hover svg{transform:none}
-  .nav{transition:none}
-}
-@media (prefers-reduced-transparency:reduce){
-  .nav{background:var(--bg);backdrop-filter:none;-webkit-backdrop-filter:none}
-  .source-badge,.glass-chip{background:var(--surface);color:var(--text);backdrop-filter:none;-webkit-backdrop-filter:none;border-color:var(--hairline)}
-  .cta .glass-chip{background:var(--surface);color:var(--accent-link)}
-  .cta .orb{display:none}
-}
-@media (prefers-contrast:more){
-  .nav{background:var(--surface);backdrop-filter:none;-webkit-backdrop-filter:none;border-bottom-color:rgba(0,0,0,0.35)}
-  .panel,.hero-art,.screen-stage{border:1px solid rgba(0,0,0,0.35)}
-  .row + .row,.split-foot{border-top-color:rgba(0,0,0,0.35)}
+  .stagger-item{opacity:1;transform:none;transition:none}
 }
 </style>
 </head>
 <body>
 
-<header class="nav" id="siteNav">
-  <div class="nav-in">
+<header class="masthead">
+  <div class="wrap masthead-in">
     <a class="brand" href="#top" aria-label="TimeTrace 一刻，回到顶部">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>
-      <span>TimeTrace</span><span class="cn">一刻</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 7v5l3 2"/>
+      </svg>
+      <span>TIMETRACE <span class="cn">· 一刻</span></span>
     </a>
-    <nav class="nav-links" aria-label="主导航">
-      <a href="#why">为什么</a>
-      <a href="#views">界面</a>
-      <a href="#privacy">隐私</a>
-      <a href="#spec">规格</a>
-      <a href="#faq">常见问题</a>
-      <a href="#friends">友链</a>
-    </nav>
-    <a class="btn btn-primary" href="https://gitee.com/zzjzgz/time-trace-code/raw/master/releases/v0.9.3/TimeTrace_0.9.3_x64-setup.exe" target="_blank" rel="noopener noreferrer">下载 v0.9.3</a>
+    <div class="masthead-meta mono">
+      <span>v0.9.3 · 2026-11-27</span>
+      <span>Windows · 免费</span>
+    </div>
   </div>
 </header>
 
 <main id="top">
 
-  <!-- P1 · 首页 -->
-  <section class="hero" data-pid="p1-home" aria-labelledby="heroTitle">
-    <div class="narrow">
-      <div class="eyebrow"><span class="dot" aria-hidden="true"></span>本地优先 · 无账号 · 无遥测</div>
-      <h1 id="heroTitle">把电脑时间，记清楚。</h1>
-      <p class="lede">TimeTrace 只做一件事：<strong>把你在各个应用上花的时间记清楚，并如实展示</strong>。它不评判效率，也不上传任何东西——所有记录都躺在你自己磁盘上的一个 SQLite 文件里，你随时可以打开、导出、搬走。</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="https://gitee.com/zzjzgz/time-trace-code/raw/master/releases/v0.9.3/TimeTrace_0.9.3_x64-setup.exe" target="_blank" rel="noopener noreferrer">下载 Windows 版
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg>
+  <section class="hero">
+    <div class="wrap">
+      <h1>把电脑时间，记清楚。</h1>
+      <p class="deck">TimeTrace 是一款本地优先的 Windows 应用使用时长统计工具。记录只写在本机，无账号、无遥测、默认不联网，完全免费。</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://gitee.com/zzjzgz/time-trace-code/raw/master/releases/v0.9.3/TimeTrace_0.9.3_x64-setup.exe" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 20h16"/>
+          </svg>
+          下载 Windows 版
         </a>
-        <a class="btn btn-quiet" href="https://gitcode.com/weixin_51713937/TimeTrace" target="_blank" rel="noopener noreferrer">查看源码</a>
+        <a class="link-quiet" href="https://gitcode.com/weixin_51713937/TimeTrace" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7L11.7 6.6"/>
+            <path d="M14 10a4 4 0 0 0-5.7 0l-3 3A4 4 0 0 0 11 18.7l1.3-1.3"/>
+          </svg>
+          查看源码
+        </a>
       </div>
-      <p class="hero-meta num">v0.9.3<span class="sep">·</span>2026-11-27<span class="sep">·</span>免安装单文件约 6 MB<span class="sep">·</span>Windows 10 / 11<span class="sep">·</span>完全免费</p>
+      <p class="note mono">安装包 · 3.3 MB · 木兰宽松许可证第 2 版</p>
     </div>
-    <figure class="hero-art lift">
-      <img src="assets/screens/today.png" width="1440" height="900" data-img alt="TimeTrace 0.9.3「今天」视图：今日总时长 6 时 12 分、分类构成、使用最多的应用、系统事件与本周节奏">
-      <div class="img-fallback" role="status"><span>界面预览未能加载。</span><a href="https://gitee.com/zzjzgz/time-trace-code" target="_blank" rel="noopener noreferrer">到发布仓查看版本说明</a></div>
-      <figcaption class="source-badge"><span class="mark" aria-hidden="true"></span>界面截图 · 由当前构建 v0.9.3 实际运行截取</figcaption>
-    </figure>
   </section>
 
-  <!-- P2 · 为什么 -->
-  <section class="block wrap" id="why" data-pid="p2-why" aria-labelledby="whyTitle">
-    <div class="block-head">
-      <div class="kicker">三个「不」</div>
-      <h2 id="whyTitle">少了这些，才敢叫本地工具。</h2>
-      <p>市面上的计时工具大多要账号、要同步、要告诉你该怎么做。TimeTrace 把这些都拿掉了。</p>
-    </div>
-    <div class="panel">
-      <div class="row row-grid">
-        <div class="row-n">01</div>
-        <div>
-          <h3>不上传</h3>
-          <p>记录只写本机 SQLite，无账号、无遥测，默认不联网。唯一可能的出站请求是读取一次公开的更新清单，而且默认不开自动检查——设置里还能切成「完全离线模式」。</p>
-          <p class="detail">标题栏会直接标出当前状态：「数据只存本地」「仅检查更新」或「完全离线」。</p>
+  <section class="standfirst" aria-label="产品原则">
+    <div class="wrap">
+      <div class="standfirst-grid stagger-list">
+        <div class="standfirst-item stagger-item">
+          <div class="standfirst-num mono">01</div>
+          <h2>本地优先</h2>
+          <p>记录只写本机 SQLite。不上传、不备份、不经过任何服务器。</p>
         </div>
-      </div>
-      <div class="row row-grid">
-        <div class="row-n">02</div>
-        <div>
-          <h3>不评判</h3>
-          <p>不打分效率、不设目标、不推送提醒。「在场」是前台待了多久，「活跃」是其中有键鼠输入或系统在放声音的那部分——两者分开记，闲置时间照记，数字该怎么来就怎么来。</p>
-          <p class="detail">窗口标题默认不记录；只有你在设置里显式打开才记。</p>
+        <div class="standfirst-item stagger-item">
+          <div class="standfirst-num mono">02</div>
+          <h2>无账号</h2>
+          <p>不用注册，不用登录。装上就能用，换台电脑从头开始。</p>
         </div>
-      </div>
-      <div class="row row-grid">
-        <div class="row-n">03</div>
-        <div>
-          <h3>不收费</h3>
-          <p>完全免费：无付费墙、无订阅、无广告、无功能阉割、无账号体系。源码以木兰宽松许可证第 2 版开放，想看它怎么统计的，可以自己读、自己编译。</p>
+        <div class="standfirst-item stagger-item">
+          <div class="standfirst-num mono">03</div>
+          <h2>零遥测</h2>
+          <p>默认不联网，没有埋点。你的使用记录不会离开这台电脑。</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- P3 · 界面 -->
-  <section class="block wrap" id="views" data-pid="p3-views" aria-labelledby="viewsTitle">
-    <div class="block-head">
-      <div class="kicker">四个视图</div>
-      <h2 id="viewsTitle">从「今天」到「事件」，逐层看下去。</h2>
-      <p>顶部章节导航直接切换，也可以用 <span class="mono">#today</span> <span class="mono">#trend</span> <span class="mono">#apps</span> <span class="mono">#events</span> 直达。历史回看支持最近 90 天；年度热力图覆盖最近一年。</p>
-    </div>
-    <div class="seg" id="viewSeg" data-active="0" role="tablist" aria-label="切换界面视图">
-      <span class="seg-thumb" aria-hidden="true"></span>
-      <button type="button" role="tab" aria-selected="true" aria-controls="viewStage" data-view="0">今天</button>
-      <button type="button" role="tab" aria-selected="false" aria-controls="viewStage" data-view="1">趋势</button>
-      <button type="button" role="tab" aria-selected="false" aria-controls="viewStage" data-view="2">应用</button>
-      <button type="button" role="tab" aria-selected="false" aria-controls="viewStage" data-view="3">事件</button>
-    </div>
-    <div class="screen-stage" id="viewStage" role="tabpanel" aria-live="polite">
-      <img class="is-active" src="assets/screens/today.png" width="1440" height="900" data-img alt="今天视图：今日总时长、分类构成、使用最多的应用、系统事件、本周节奏">
-      <img src="assets/screens/trend.png" width="1440" height="900" data-img alt="趋势视图（年）：年度活跃热力图、常用应用 Top 8、时段分布与全年分类构成">
-      <img src="assets/screens/apps.png" width="1440" height="900" data-img alt="应用视图：按应用排行的时长列表">
-      <img src="assets/screens/events.png" width="1440" height="900" data-img alt="事件视图：按时间顺序排列的系统事件流">
-      <div class="img-fallback" role="status"><span>界面预览未能加载。</span><a href="https://gitee.com/zzjzgz/time-trace-code/tree/master/releases/v0.9.3" target="_blank" rel="noopener noreferrer">到发布仓查看版本说明</a></div>
-    </div>
-    <p class="screen-cap" id="viewCap">今天：总时长、分类构成、使用最多的应用、系统事件与本周节奏，一屏看完。</p>
-    <p class="screen-note">以上界面截图由 TimeTrace v0.9.3 当前源码构建后实际运行截取；画面中的数据为内置演示快照，不是任何真实用户的记录。截图取自网页预览，应用图标在这里是字块兜底；安装后的桌面版从本机 exe 提取真实图标（不联网、不内置第三方品牌图标包）。</p>
-  </section>
-
-  <!-- 数据属于你 -->
-  <section class="block wrap" id="data" aria-labelledby="dataTitle">
-    <div class="block-head">
-      <div class="kicker">数据属于你</div>
-      <h2 id="dataTitle">能打开，能导出，能搬走，也能彻底删掉。</h2>
-      <p>数据目录默认在本机用户目录，路径可以自己改。下面这些操作全在本地完成，不经过任何服务器。</p>
-    </div>
-    <div class="panel">
-      <div class="row row-grid"><div class="row-n">01</div><div><h3>导出 CSV / JSON</h3><p>把记录导成通用格式，想用 Excel、Python 或别的东西分析都行。导出内容默认不含窗口标题。</p></div></div>
-      <div class="row row-grid"><div class="row-n">02</div><div><h3>立即备份与恢复</h3><p>一键备份当前数据库，也能从备份文件恢复。备份留在你自己指定的目录里。</p></div></div>
-      <div class="row row-grid"><div class="row-n">03</div><div><h3>整库迁移</h3><p>换数据目录时按「复制 → 校验 → 写设置 → 切换连接 → 删旧库」的顺序执行，先确认新库完整才动旧的。</p></div></div>
-      <div class="row row-grid"><div class="row-n">04</div><div><h3>清除全部数据</h3><p>先列出将被删除的条数，再要求手动输入「清除」才可执行；底层用安全擦除、VACUUM 与 WAL 截断处理残留。</p></div></div>
-    </div>
-  </section>
-
-  <!-- P4 · 隐私 -->
-  <section class="block wrap" id="privacy" data-pid="p4-privacy" aria-labelledby="privacyTitle">
-    <div class="block-head">
-      <div class="kicker">记录边界</div>
-      <h2 id="privacyTitle">记什么、不记什么，写清楚。</h2>
-      <p>不用猜，也不用读隐私政策里那段绕来绕去的话。</p>
-    </div>
-    <div class="panel">
-      <div class="split">
-        <div>
-          <span class="tag">会记录</span>
-          <h3>只记时间，不记内容</h3>
-          <ul>
-            <li>前台应用时长：每秒采样一次，连续使用合并成一段</li>
-            <li>在场 / 活跃：两个口径分开统计</li>
-            <li>系统事件：开机、闲置、休眠唤醒、锁屏解锁、暂停继续</li>
-            <li>应用分类：工作 / 学习 / 娱乐 / 浏览 / 其他，可自行改</li>
-            <li>窗口标题：默认关闭，需显式打开</li>
-          </ul>
-        </div>
-        <div>
-          <span class="tag">不记录</span>
-          <h3>这些内容一律不碰</h3>
-          <ul class="no">
-            <li>键盘输入内容</li>
-            <li>截图</li>
-            <li>剪贴板</li>
-            <li>浏览记录</li>
-            <li>任何设备标识</li>
-          </ul>
+  <!-- 四视图轮播 · #045 Wipe -->
+  <section class="carousel-section">
+    <div class="wrap">
+      <div class="carousel-head">
+        <h2>看清时间去了哪里。</h2>
+      </div>
+      <div class="carousel-name" id="viewName">今天</div>
+      <div class="carousel-stage">
+        <button class="carousel-arrow" type="button" data-dir="-1" data-carousel="view" aria-label="上一个视图">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <button class="carousel-arrow" type="button" data-dir="1" data-carousel="view" aria-label="下一个视图">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+        <div class="carousel-window wipe-frame" id="viewFrame" data-images="assets/views/today.jpg,assets/views/trend.png,assets/views/apps.png,assets/views/events.png">
+          <div class="carousel-slide">
+            <img class="wipe-base" id="viewBase" src="assets/views/today.jpg" alt="今天视图" width="1080" height="792" >
+            <img class="wipe-top" id="viewTop" src="assets/views/today.jpg" alt="" width="1080" height="792"  aria-hidden="true">
+            <span class="wipe-edge" aria-hidden="true"></span>
+          </div>
         </div>
       </div>
-      <div class="split-foot">前台窗口所属进程每秒采样一次，只用于判定「哪个应用在前台」；采样结果不离开本机，也不生成任何可供远程查询的标识。</div>
+      <div class="dots" id="viewDots" aria-label="选择视图"></div>
     </div>
   </section>
 
-  <!-- 规格 -->
-  <section class="block wrap" id="spec" aria-labelledby="specTitle">
-    <div class="block-head">
-      <div class="kicker">规格</div>
-      <h2 id="specTitle">一个小到不需要管理的程序。</h2>
-    </div>
-    <dl class="panel spec-grid">
-      <div class="spec-item"><dt>当前版本</dt><dd class="num">0.9.3<small>2026-11-27 发布</small></dd></div>
-      <div class="spec-item"><dt>体积</dt><dd>约 6 MB<small>免安装单文件，双击即用</small></dd></div>
-      <div class="spec-item"><dt>技术栈</dt><dd>Tauri 2 · Rust · React 19<small>TypeScript · SQLite（rusqlite bundled）</small></dd></div>
-      <div class="spec-item"><dt>运行平台</dt><dd>Windows 10 / 11（x64）<small>需要 Microsoft Edge WebView2 运行时</small></dd></div>
-      <div class="spec-item"><dt>许可</dt><dd>木兰宽松许可证 v2<small>源码开放，可自行编译</small></dd></div>
-      <div class="spec-item"><dt>更新方式</dt><dd>应用内原地覆盖<small>设置、记录、快捷方式都不动；自动检查默认关闭</small></dd></div>
-    </dl>
-  </section>
-
-  <!-- P5 · 下载 -->
-  <section class="block wrap" id="download" data-pid="p5-download" aria-labelledby="downloadTitle">
-    <div class="cta">
-      <span class="orb orb-a" aria-hidden="true"></span><span class="orb orb-b" aria-hidden="true"></span>
-      <div class="cta-in">
-        <div class="kicker">下载 · v0.9.3</div>
-        <h2 id="downloadTitle">把时间留在自己手里。</h2>
-        <p>一个安装包，点击即下载。完全免费，不需要注册，也不会问你要邮箱。</p>
-        <div class="cta-actions">
-          <a class="glass-chip" href="https://gitee.com/zzjzgz/time-trace-code/raw/master/releases/v0.9.3/TimeTrace_0.9.3_x64-setup.exe" target="_blank" rel="noopener noreferrer">下载安装向导 · setup.exe
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
-          </a>
+  <!-- 五主题轮播 · #137 Push -->
+  <section class="carousel-section">
+    <div class="wrap">
+      <div class="carousel-head">
+        <h2>五种主题。</h2>
+      </div>
+      <div class="carousel-name" id="themeName">一刻</div>
+      <div class="carousel-stage">
+        <button class="carousel-arrow" type="button" data-dir="-1" data-carousel="theme" aria-label="上一个主题">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <button class="carousel-arrow" type="button" data-dir="1" data-carousel="theme" aria-label="下一个主题">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+        <div class="carousel-window push-frame" id="themeFrame" data-images="assets/themes/yike.jpg,assets/themes/apple.jpg,assets/themes/dial.png,assets/themes/tick.png,assets/themes/focus.png">
+          <div class="carousel-slide">
+            <img class="push-current" id="themeCurrent" src="assets/themes/yike.jpg" alt="一刻主题" width="1080" height="792" >
+            <img class="push-next" id="themeNext" src="assets/themes/yike.jpg" alt="" width="1080" height="792"  aria-hidden="true">
+            <span class="push-seam" aria-hidden="true"></span>
+          </div>
         </div>
-        <p class="cta-note">点击即开始下载 v0.9.3 安装包。项目没有代码签名证书，Windows SmartScreen 可能提示「未知发布者」；安装前请先从托盘右键退出正在运行的 TimeTrace。需要免安装单文件或 MSI，请到发布仓的 <a href="https://gitee.com/zzjzgz/time-trace-code/tree/master/releases/v0.9.3" target="_blank" rel="noopener noreferrer">v0.9.3 目录</a>；历史版本与更新清单也在同一个仓库。</p>
+      </div>
+      <div class="dots" id="themeDots" aria-label="选择主题"></div>
+    </div>
+  </section>
+
+  <section class="facts">
+    <div class="wrap">
+      <div class="fact-row">
+        <div class="fact-key">当前版本</div>
+        <div class="fact-val">0.9.3 · 2026-11-27</div>
+      </div>
+      <div class="fact-row">
+        <div class="fact-key">技术栈</div>
+        <div class="fact-val mono">Tauri 2 · Rust · React 19 · TypeScript · SQLite</div>
+      </div>
+      <div class="fact-row">
+        <div class="fact-key">数据位置</div>
+        <div class="fact-val">本机 SQLite，默认不联网</div>
+      </div>
+      <div class="fact-row">
+        <div class="fact-key">源码许可</div>
+        <div class="fact-val">
+          <a href="https://gitcode.com/weixin_51713937/TimeTrace" target="_blank" rel="noopener noreferrer">木兰宽松许可证第 2 版 · GitCode</a>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- FAQ -->
-  <section class="block wrap" id="faq" aria-labelledby="faqTitle">
-    <div class="block-head">
-      <div class="kicker">常见问题</div>
-      <h2 id="faqTitle">还有几个可能被问到的。</h2>
-    </div>
-    <div class="panel">
-      <div class="faq-item"><h3>需要联网吗？</h3><p>不需要。统计、存储、展示全在本机完成，默认不联网。只有主动点「检查更新」时才会读一次公开清单，且自动检查默认关闭；设置里可以开启「完全离线模式」，彻底关掉这条出站请求。</p></div>
-      <div class="faq-item"><h3>我的数据会被上传吗？</h3><p>不会。没有账号体系，没有遥测，没有云端同步。记录只写本机 SQLite 文件，文件路径可以自己改，也可以随时导出、备份或清除。</p></div>
-      <div class="faq-item"><h3>换电脑或重装怎么办？</h3><p>把数据目录整个复制走即可；设置里也提供导出、备份恢复与整库迁移。应用内更新采用原地覆盖，不会动到设置、记录和快捷方式。</p></div>
-      <div class="faq-item"><h3>支持 macOS 或 Linux 吗？</h3><p>目前只支持 Windows 10 / 11（x64），依赖 WebView2 运行时与 Windows 前台窗口接口。界面本身是 Web 技术，但采集层是 Win32 实现，暂未移植到其他平台。</p></div>
-      <div class="faq-item"><h3>在哪里看源码和更新日志？</h3><p>源码在 <a href="https://gitcode.com/weixin_51713937/TimeTrace" target="_blank" rel="noopener noreferrer">GitCode 仓库</a>，安装包、历史版本与更新清单在 <a href="https://gitee.com/zzjzgz/time-trace-code" target="_blank" rel="noopener noreferrer">Gitee 发布仓</a>。许可为木兰宽松许可证第 2 版。</p></div>
-    </div>
-  </section>
-
-  <!-- 友情链接 -->
-  <section class="block wrap" id="friends" aria-labelledby="friendsTitle">
-    <h2 class="friend-label" id="friendsTitle">友情链接</h2>
-    <div class="panel">
-      <a class="friend-row" href="https://yujian.cystation.site" target="_blank" rel="noopener noreferrer">
-        <img src="assets/friends/yujian-logo.svg" width="44" height="44" alt="屿见官网 logo">
-        <span class="friend-text">
-          <strong>屿见官网</strong>
-          <span>以优越的技术为大家提供更优渥的平台</span>
-        </span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
-      </a>
+  <section class="closing">
+    <div class="wrap">
+      <h2>现在就装。</h2>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://gitee.com/zzjzgz/time-trace-code/raw/master/releases/v0.9.3/TimeTrace_0.9.3_x64-setup.exe" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 20h16"/>
+          </svg>
+          下载 Windows 版
+        </a>
+        <a class="link-quiet" href="https://gitee.com/zzjzgz/time-trace-code" target="_blank" rel="noopener noreferrer">历史版本与更新清单</a>
+      </div>
+      <p class="note">v0.9.3 安装向导 · 完全免费 · 无账号</p>
     </div>
   </section>
 
 </main>
 
-<footer>
-  <div class="wrap foot-in">
-    <div class="foot-meta">© 2026 zzj · TimeTrace · 一刻 · 木兰宽松许可证第 2 版</div>
-    <nav class="foot-links" aria-label="页脚链接">
-      <a href="https://gitcode.com/weixin_51713937/TimeTrace" target="_blank" rel="noopener noreferrer">源码</a>
-      <a href="https://gitee.com/zzjzgz/time-trace-code" target="_blank" rel="noopener noreferrer">发布仓</a>
-      <a href="https://gitee.com/zzjzgz/time-trace-code/raw/master/latest.json" target="_blank" rel="noopener noreferrer">更新清单</a>
-      <a href="#top">回到顶部</a>
-    </nav>
+<footer class="footer">
+  <div class="wrap footer-in">
+    <span>TIMETRACE · 一刻 · v0.9.3</span>
+    <span>木兰宽松许可证第 2 版</span>
+    <a href="https://gitcode.com/weixin_51713937/TimeTrace" target="_blank" rel="noopener noreferrer">源码</a>
   </div>
 </footer>
 
 <script>
 (function () {
-  var nav = document.getElementById('siteNav');
-  function onScroll() { nav.classList.toggle('scrolled', window.scrollY > 8); }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
-  var seg = document.getElementById('viewSeg');
-  var stage = document.getElementById('viewStage');
-  var cap = document.getElementById('viewCap');
-  var frames = Array.prototype.slice.call(stage.querySelectorAll('img'));
-  var captions = [
-    '今天：总时长、分类构成、使用最多的应用、系统事件与本周节奏，一屏看完。',
-    '趋势：日 / 周 / 月 / 年四档；年度热力图逐日点亮，下面接着常用应用、时段分布与全年分类构成。',
-    '应用：按应用排行，点任意一行看它「日 / 周 / 30 天」的时间线。',
-    '事件：完整的系统事件流，按类型区分，时间去了哪里一目了然。'
-  ];
-  function select(index) {
-    seg.setAttribute('data-active', String(index));
-    Array.prototype.forEach.call(seg.querySelectorAll('button'), function (b) {
-      b.setAttribute('aria-selected', String(Number(b.getAttribute('data-view')) === index));
+  "use strict";
+  var list = document.querySelector(".stagger-list");
+  if (!list) return;
+  var items = Array.prototype.slice.call(list.querySelectorAll(".stagger-item"));
+  function reveal() {
+    items.forEach(function (el, i) {
+      setTimeout(function () { el.classList.add("in"); }, i * 90);
     });
-    frames.forEach(function (img, i) { img.classList.toggle('is-active', i === index); });
-    cap.textContent = captions[index];
   }
-  seg.addEventListener('click', function (e) {
-    var b = e.target.closest('button[data-view]');
-    if (b) select(Number(b.getAttribute('data-view')));
-  });
-  seg.addEventListener('keydown', function (e) {
-    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-    var current = Number(seg.getAttribute('data-active'));
-    var next = (current + (e.key === 'ArrowRight' ? 1 : 3)) % 4;
-    select(next);
-    seg.querySelectorAll('button[data-view]')[next].focus();
-    e.preventDefault();
-  });
+  if ("IntersectionObserver" in window) {
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { reveal(); obs.disconnect(); }
+      });
+    }, { threshold: 0.4 });
+    obs.observe(list);
+  } else {
+    reveal();
+  }
+})();
 
-  var images = Array.prototype.slice.call(document.querySelectorAll('img[data-img]'));
-  images.forEach(function (img) {
-    img.addEventListener('error', function () {
-      var host = img.closest('.hero-art, .screen-stage');
-      if (host) host.classList.add('img-error');
+// Motion Prompt #137 · MIT License (c) 2026 Shohei Ohtaki · https://showheyohtaki.github.io/motion-prompt/#137
+// Motion Prompt #045 · MIT License (c) 2026 Shohei Ohtaki · https://showheyohtaki.github.io/motion-prompt/#045
+// #137 Push: 1.15s, cubic-bezier(.65,0,.35,1), full-frame joined slide, 6px seam.
+// #045 Wipe: 1.1s, cubic-bezier(.65,0,.35,1), vertical clip reveal, 4px edge.
+(function () {
+  "use strict";
+  var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var DELAY = 4000;
+
+  function makeCarousel(cfg) {
+    var frame = document.getElementById(cfg.frame);
+    var dotsBox = document.getElementById(cfg.dots);
+    var nameEl = document.getElementById(cfg.name);
+    if (!frame || !dotsBox) return null;
+    var images = frame.getAttribute("data-images").split(",");
+    var stage = frame.closest(".carousel-stage");
+    var arrows = Array.prototype.slice.call(stage.querySelectorAll(".carousel-arrow"));
+    var dots = [];
+    var cur = 0;
+    var busy = false;
+    var timer = null;
+
+    function setFrameWidth() {
+      frame.style.setProperty("--frame-w", frame.clientWidth + "px");
+    }
+
+    function sync() {
+      dots.forEach(function (d, n) { d.setAttribute("aria-current", n === cur ? "true" : "false"); });
+      if (nameEl) nameEl.textContent = cfg.names[cur];
+      arrows.forEach(function (a) {
+        var dir = Number(a.getAttribute("data-dir"));
+        a.disabled = dir < 0 ? cur === 0 : cur === images.length - 1;
+      });
+    }
+
+    function commit(i) {
+      // 过渡结束后把目标图落为静止基准
+      if (cfg.type === "push") {
+        var curEl = document.getElementById(cfg.layerCurrent);
+        var nxtEl = document.getElementById(cfg.layerNext);
+        var seam = frame.querySelector(".push-seam");
+        // 冻结过渡：否则移除 .moving 时两图会从终点反向滑回起点（视觉上像播放两次）
+        curEl.style.transition = "none";
+        nxtEl.style.transition = "none";
+        if (seam) seam.style.transition = "none";
+        frame.classList.remove("moving");
+        // next 已在 0 且显示目标图 —— 直接晋升为 current，不换 src（换 src 会触发解码闪旧图）
+        nxtEl.style.transform = "";
+        // 旧 current 瞬间移到右侧待命位，降级为 next
+        curEl.style.transform = "translateX(100%)";
+        if (seam) { seam.style.transform = ""; seam.style.opacity = ""; }
+        // 交换角色标识与可访问性属性
+        curEl.id = cfg.layerNext;
+        curEl.classList.remove("push-current");
+        curEl.classList.add("push-next");
+        curEl.alt = "";
+        curEl.setAttribute("aria-hidden", "true");
+        nxtEl.id = cfg.layerCurrent;
+        nxtEl.classList.remove("push-next");
+        nxtEl.classList.add("push-current");
+        nxtEl.alt = cfg.names[i];
+        nxtEl.removeAttribute("aria-hidden");
+        void frame.offsetWidth; // 强制 reflow，让冻结状态生效
+        curEl.style.transition = "";
+        nxtEl.style.transition = "";
+        if (seam) seam.style.transition = "";
+      } else {
+        document.getElementById(cfg.layerBase).src = images[i];
+        document.getElementById(cfg.layerTop).src = images[i];
+        frame.classList.remove("moving");
+      }
+      cur = i;
+      sync();
+      busy = false;
+    }
+
+    function goTo(target) {
+      if (busy || target === cur || target < 0 || target >= images.length) return;
+      busy = true;
+      pause();
+      var dir = target > cur ? 1 : -1;
+      setFrameWidth();
+      if (reduceMotion) { commit(target); play(); return; }
+
+      if (cfg.type === "push") {
+        var next = document.getElementById(cfg.layerNext);
+        next.src = images[target];
+        // 反向：从左侧进入
+        if (dir < 0) {
+          next.style.transform = "translateX(-100%)";
+          frame.classList.add("moving");
+          requestAnimationFrame(function () {
+            document.getElementById(cfg.layerCurrent).style.transform = "translateX(100%)";
+            next.style.transform = "translateX(0)";
+            var seam = frame.querySelector(".push-seam");
+            seam.style.transform = "translateX(" + (frame.clientWidth - 6) + "px)";
+          });
+        } else {
+          next.style.transform = "translateX(100%)";
+          frame.classList.add("moving");
+          requestAnimationFrame(function () {
+            document.getElementById(cfg.layerCurrent).style.transform = "translateX(-100%)";
+            next.style.transform = "translateX(0)";
+          });
+        }
+        setTimeout(function () {
+          document.getElementById(cfg.layerCurrent).style.transform = "";
+          next.style.transform = "";
+          commit(target);
+          play();
+        }, 1150);
+      } else {
+        // Wipe：两图静止，top 层 clip 揭示
+        var top = document.getElementById(cfg.layerTop);
+        top.src = images[target];
+        top.style.transition = "none";
+        top.style.clipPath = "inset(0 100% 0 0)";
+        frame.classList.add("moving");
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            top.style.transition = "";
+            top.style.clipPath = "inset(0 0 0 0)";
+          });
+        });
+        setTimeout(function () { commit(target); play(); }, 1100);
+      }
+    }
+
+    function tick() {
+      var next = cur + 1;
+      goTo(next >= images.length ? 0 : next);
+    }
+    function play() {
+      if (reduceMotion || timer) return;
+      timer = setInterval(tick, DELAY);
+    }
+    function pause() {
+      if (!timer) return;
+      clearInterval(timer);
+      timer = null;
+    }
+
+    images.forEach(function (_, i) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "dot";
+      b.setAttribute("aria-label", "第 " + (i + 1) + " 张");
+      b.addEventListener("click", function () { goTo(i); });
+      dotsBox.appendChild(b);
+      dots.push(b);
     });
+    arrows.forEach(function (a) {
+      a.addEventListener("click", function () { goTo(cur + Number(a.getAttribute("data-dir"))); });
+    });
+    stage.addEventListener("mouseenter", pause);
+    stage.addEventListener("mouseleave", play);
+    stage.addEventListener("focusin", pause);
+    stage.addEventListener("focusout", play);
+    stage.addEventListener("touchstart", pause, { passive: true });
+    window.addEventListener("resize", setFrameWidth);
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) pause(); else play();
+    });
+
+    setFrameWidth();
+    sync();
+    play();
+    return { goTo: goTo, pause: pause, play: play };
+  }
+
+  makeCarousel({
+    type: "wipe", frame: "viewFrame", dots: "viewDots", name: "viewName",
+    layerBase: "viewBase", layerTop: "viewTop",
+    names: ["今天", "趋势", "应用", "事件"]
+  });
+  makeCarousel({
+    type: "push", frame: "themeFrame", dots: "themeDots", name: "themeName",
+    layerCurrent: "themeCurrent", layerNext: "themeNext",
+    names: ["一刻", "Apple 苹果", "表盘", "刻度", "专注透镜"]
   });
 })();
 </script>
